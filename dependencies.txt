@@ -1,3 +1,2 @@
-please install the blow:
-
-pip install django-crispy-forms 
+django-crispy-forms
+Pillow
