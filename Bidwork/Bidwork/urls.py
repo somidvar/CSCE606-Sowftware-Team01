@@ -20,6 +20,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from users import views as user_views
 
+#changind default text in admin page
+admin.site.site_header = "BidWork Admin"
+admin.site.site_title = "BidWork Admin Portal"
+admin.site.index_title = "Welcome to BidWork Researcher Portal"
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', user_views.register, name='register'),
