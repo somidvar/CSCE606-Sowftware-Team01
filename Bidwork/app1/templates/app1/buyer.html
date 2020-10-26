@@ -1,0 +1,174 @@
+{%extends "app1/baseSeller.html"%}
+
+{% block bodydata %}
+<div class="container">
+	<div class="row">
+
+		<div class="col-lg-12">
+			<div class="form-group bg_blue">
+				<h1><strong>My Bids</strong><h1>
+				</div>
+				<div class="table">
+					<form id="form1">
+						<table class="table">
+							<tr>
+								<th>ID</th>
+								<th>Buyer</th>
+								<th>Week</th>
+								<th>Bid Price</th>
+								<th>Bid Hour</th>
+								<th>Bid Amount</th>
+								<th>Remained Balance</th>
+								<th>Initial Budget</th>
+							</tr>
+							{% for buyer in buyers %}
+							<tr id="tr_data">
+								<td>{{ buyer.id }}</td>
+								<td  data-id="{{ buyer.id }}" data-type="buyerName">{{ buyer.buyerName }}</td>
+								<td class="editable" data-id="{{ buyer.id }}" data-type="weekNumber">{{ buyer.weekNumber }}</td>
+								<td  data-id="{{ buyer.id }}" data-type="bidPrice">{{ buyer.bidPrice }}</td>
+								<td class="editable" data-id="{{ buyer.id }}" data-type="bidHour">{{ buyer.bidHour }}</td>
+								<td  data-id="{{ buyer.id }}" data-type="bidAmount">{{ buyer.bidAmount }}</td>
+								<td  data-id="{{ buyer.id }}" data-type="remainedBalance">{{ buyer.remainedBalance }}</td>
+								<td  data-id="{{ buyer.id }}" data-type="initialBudget">{{ buyer.initialBudget}}</td>
+								<td><a href="/deleteBuyer/{{buyer.id}}" class="btn btn-danger">Delete</a><br>
+									<input class="btn btn-success update-button" id='{{buyer.id}}' value="Update" type="button" />
+								</td>
+							</tr>
+							{% endfor %}
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-lg-12">
+			<div class="form-group bg_blue">
+				<h1><strong>Seller Schedule</strong><h1>
+				</div>
+				<div class="table">
+					<form id="form1">
+						<table class="table">
+							<tr>
+								<th>ID</th>
+								<th>Seller</th>
+								<th>Week</th>
+								<th>Min</th>
+								<th>Max</th>
+								<th>Current</th>
+								<th>Availablity</th>
+								<th>Remained</th>
+								<th>Horizon</th>
+							</tr>
+							{% for seller in sellers %}
+							<tr id="tr_data">
+								<td>{{ seller.id }}</td>
+								<td  data-id="{{ seller.id }}" data-type="sellerName">{{ seller.sellerName }}</td>
+								<td  data-id="{{ seller.id }}" data-type="weekNumber">{{ seller.weekNumber }}</td>
+								<td  data-id="{{ seller.id }}" data-type="minPrice">{{ seller.minPrice }}</td>				
+								<td  data-id="{{ seller.id }}" data-type="maxPrice">{{ seller.maxPrice }}</td>				
+								<td  data-id="{{ seller.id }}" data-type="currentPrice">{{ seller.currentPrice }}</td>
+								<td  data-id="{{ seller.id }}" data-type="availabilityHour">{{ seller.availabilityHour }}</td>
+								<td  data-id="{{ seller.id }}" data-type="remainedHour">{{ seller.remainedHour }}</td>		
+								<td  data-id="{{ seller.id }}" data-type="horizon">{{ seller.horizon}}</td>
+								<td><a href="/deleteSeller/{{seller.id}}" class="btn btn-danger">Delete</a><br>
+									<input class="btn btn-success update-button" id='{{seller.id}}' value="Update" type="button" />
+								</td>
+							</tr>
+							{% endfor %}
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="form-group">
+					{% if messages %}
+						{% for message in messages %}
+							{% if message.tags == 'success' %}
+								<div class="alert alert-success">{{ message }}</div>
+							{% elif message.tags == 'error' %}
+								<div class="alert alert-danger">{{ message }}</div>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		{% endblock bodydata %}
+
+		{% block custom_js %}
+		<script>
+			$(document).ready(function(){
+				$(document).on("dblclick",".editable",function(){
+					var value=$(this).text();
+					var data_type=$(this).data("type");
+					var input_type="text";
+					if(data_type=="created_at"){
+						input_type="datetime-local";
+					}
+					var input="<input name='selected_buyer' type='"+input_type+"' class='input-data' value='"+value+"' class='form-control'>";
+					$(this).html(input);
+					$(this).removeClass("editable")
+				});
+
+				$(document).on("click",".update-button",function(e){
+					let id = $(this)[0]["id"];
+					sendToServer(id);
+				});
+
+				$(document).on("blur",".input-data",function(){
+					var value=$(this).val();
+					var td=$(this).parent("td");
+					$(this).remove();
+					td.html(value);
+					td.addClass("editable");
+				});
+				$(document).on("keypress",".input-data",function(e){
+					var key=e.which;
+					if(key==13){
+						var value=$(this).val();
+						var td=$(this).parent("td");
+						$(this).remove();
+						td.html(value);
+						td.addClass("editable");
+					}
+				});
+				function sendToServer(id){
+					$.ajax({
+						url:"http://127.0.0.1:8000/saveBuyer",
+						type:"POST",
+						data:do_serialize(id),
+					})
+					.done(function(response){
+						console.log(response);
+						alert(request,"Record Updated")
+					})
+					.fail(function(){
+						console.log("Error Occured");
+					});
+				}
+
+			});
+			function do_serialize(id){
+				let data = {};
+				$('#form1').find('tr').each(function(){
+					if ($(this)[0].children[0].innerText === id){
+						let row  = $(this)[0];
+						if (row.children !== undefined){
+							data.id = id;
+							data.buyerName = row.children[1].textContent;
+							data.weekNumber = row.children[2].textContent;
+							data.bidPrice = row.children[3].textContent;
+							data.bidHour = row.children[4].textContent;
+							data.bidAmount = row.children[5].textContent;
+							data.remainedBalance = row.children[6].textContent;
+							data.initialBudget = row.children[7].textContent;
+						}
+					}
+				});
+				return data;
+			}          
+		</script>
+		{% endblock custom_js %}

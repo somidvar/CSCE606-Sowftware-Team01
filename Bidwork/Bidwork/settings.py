@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'app1.apps.App1Config',
     'users.apps.UsersConfig',
     'sellers.apps.SellersConfig',
+    'buyers.apps.BuyersConfig',
     'crispy_forms', 
     'django.contrib.admin',
     'django.contrib.auth',

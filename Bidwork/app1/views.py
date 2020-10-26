@@ -7,6 +7,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
 from sellers.models import Seller
+from buyers.models import Buyer
 
 
 import json
@@ -37,13 +38,19 @@ def aboutus(request):
 	return render(request,'app1/aboutus.html')
 
 def seller(request):
-	context={
-	'sellers':Seller.objects.all()
-	}
-	return render(request,'app1/seller.html',context)
+	return render(request,'app1/seller.html',{'sellers':Seller.objects.all()})
 
 def deleteSeller(request,sellerID):
 	seller=Seller.objects.get(id=sellerID)
 	seller.delete()
 	messages.error(request, "Deleted Successfully")
 	return HttpResponseRedirect("/seller")
+
+def buyer(request):
+	return render(request,'app1/buyer.html',{'buyers':Buyer.objects.all(),'sellers':Seller.objects.all()})
+
+def deleteBuyer(request,buyerID):
+	buyer=Buyer.objects.get(id=buyerID)
+	buyer.delete()
+	messages.error(request, "Deleted Successfully")
+	return HttpResponseRedirect("/buyer")
