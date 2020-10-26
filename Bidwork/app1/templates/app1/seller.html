@@ -1,117 +1,126 @@
-{%extends "app1/baseNoAnnouncement.html"%}
-{%block content%}
-	<h1>Bidwork Home!</h1>
+{%extends "app1/baseSeller.html"%}
 
-		<!-- Table with panel -->
-		<div class="card card-cascade narrower">
-
-		  <!--Card image-->
-		  <div
-		    class="view view-cascade gradient-card-header blue-gradient narrower py-2 mx-4 mb-3 d-flex justify-content-between align-items-center">
-
-		    <div>
-		      <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
-		        <i class="fas fa-th-large mt-0"></i>
-		      </button>
-		      <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
-		        <i class="fas fa-columns mt-0"></i>
-		      </button>
-		    </div>
-
-		    <a href="" class="white-text mx-3">Schedule Details</a>
-
-		    <div>
-		      <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
-		        <i class="fas fa-pencil-alt mt-0"></i>
-		      </button>
-		      <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
-		        <i class="far fa-trash-alt mt-0"></i>
-		      </button>
-		      <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
-		        <i class="fas fa-info-circle mt-0"></i>
-		      </button>
-		    </div>
-
-		  </div>
-		  <!--/Card image-->
-
-		  <div class="px-4">
-
-		    <div class="table-wrapper">
-		      <!--Table-->
-		      <table class="table table-hover mb-0">
-
-		        <!--Table head-->
-		        <thead>
-		          <tr>
-		            <th>
-		            </th>
-		            <th class="th-lg">
-		              <a href="">Week
-		                <i class="fas fa-sort ml-1"></i>
-		              </a>
-		            </th>
-		            <th class="th-lg">
-		              <a href="">Min Price
-		                <i class="fas fa-sort ml-1"></i>
-		              </a>
-		            </th>
-		            <th class="th-lg">
-		              <a href="">Max Price
-		                <i class="fas fa-sort ml-1"></i>
-		              </a>
-		            </th>
-		            <th class="th-lg">
-		              <a href="">Current Price
-		                <i class="fas fa-sort ml-1"></i>
-		              </a>
-		            </th>
-		            <th class="th-lg">
-		              <a href="">Horizon
-		                <i class="fas fa-sort ml-1"></i>
-		              </a>
-		            </th>
-		            <th class="th-lg">
-		              <a href="">Available Hours
-		                <i class="fas fa-sort ml-1"></i>
-		              </a>
-		            </th>
-		            <th class="th-lg">
-		              <a href="">Remained Hours
-		                <i class="fas fa-sort ml-1"></i>
-		              </a>
-		            </th>		            
-		          </tr>
-		        </thead>
-		        <!--Table head-->
-
-		        <!--Table body-->
-		        <tbody>
-	            {% for seller in sellers %}
-		          <tr>
-		            <th scope="row">
-		              <input class="form-check-input" type="checkbox" id="checkbox1">
-		              <label class="form-check-label" for="checkbox1" class="label-table"></label>
-		            </th>
-		            <td>{{seller.weekNumber}}</td>
-		            <td>{{seller.minPrice}}</td>
-		            <td>{{seller.maxPrice}}</td>
-		            <td>{{seller.currentPrice}}</td>
-		            <td>{{seller.horizon}}</td>
-		            <td>{{seller.availabilityHour}}</td>
-		            <td>{{seller.remainedHour}}</td>
-		          </tr>
-			    {% endfor %}
-		        </tbody>
-		        <!--Table body-->
-		      </table>
-		      <!--Table-->
-		    </div>
-
-		  </div>
-
+{% block bodydata %}
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="form-group bg_blue">
+				<h1><strong>My schedule</strong><h1>
+				</div>
+				<div class="table">
+					<form id="form1">
+						<table class="table">
+							<tr>
+								<th>ID</th>
+								<th>Name</th>
+								<th>Min</th>
+								<th>Max</th>
+							</tr>
+							{% for seller in sellers %}
+							<tr id="tr_data">
+								<td>{{ seller.id }}</td>
+								<td class="editable" data-id="{{ seller.id }}" data-type="sellerName">{{ seller.sellerName }}</td>
+								<td class="editable" data-id="{{ seller.id }}" data-type="minPrice">{{ seller.minPrice }}</td>
+								<td class="editable" data-id="{{ seller.id }}" data-type="maxPrice">{{ seller.maxPrice }}</td>
+								<td><a href="/deleteSeller/{{seller.id}}" class="btn btn-danger">Delete</a><br>
+									<input class="btn btn-success update-button" id='{{seller.id}}' value="Update" type="button" />
+								</td>
+							</tr>
+							{% endfor %}
+						</table>
+					</form>
+				</div>
+			</div>
 		</div>
-		<button type="button">Update</button>
-		<!-- Table with panel -->
-{%endblock content%}
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="form-group">
+					{% if messages %}
+					{% for message in messages %}
+					{% if message.tags == 'success' %}
+					<div class="alert alert-success">{{ message }}</div>
+					{% elif message.tags == 'error' %}
+					<div class="alert alert-danger">{{ message }}</div>
+					{% endif %}
+					{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		{% endblock bodydata %}
 
+		{% block custom_js %}
+		<script>
+			$(document).ready(function(){
+
+				$(document).on("dblclick",".editable",function(){
+
+					var value=$(this).text();
+					var data_type=$(this).data("type");
+					var input_type="text";
+					if(data_type=="created_at")
+					{
+						input_type="datetime-local";
+					}
+					var input="<input name='selected_seller' type='"+input_type+"' class='input-data' value='"+value+"' class='form-control'>";
+					$(this).html(input);
+					$(this).removeClass("editable")
+				});
+
+				$(document).on("click",".update-button",function(e){
+
+					let id = $(this)[0]["id"];
+					sendToServer(id);
+				});
+
+				$(document).on("blur",".input-data",function(){
+					var value=$(this).val();
+					var td=$(this).parent("td");
+					$(this).remove();
+					td.html(value);
+					td.addClass("editable");
+				});
+				$(document).on("keypress",".input-data",function(e){
+					var key=e.which;
+					if(key==13){
+						var value=$(this).val();
+						var td=$(this).parent("td");
+						$(this).remove();
+						td.html(value);
+						td.addClass("editable");
+					}
+				});
+				function sendToServer(id){
+					$.ajax({
+						url:"http://127.0.0.1:8000/saveSeller",
+						type:"POST",
+						data:do_serialize(id),
+					})
+					.done(function(response){
+						console.log(response);
+						alert(request,"Record Updated")
+					})
+					.fail(function(){
+						console.log("Error Occured");
+					});
+				}
+
+			});
+			function do_serialize(id){
+
+				let data = {};
+				$('#form1').find('tr').each(function(){
+					if ($(this)[0].children[0].innerText === id){
+						let row  = $(this)[0];
+						if (row.children !== undefined){
+							data.id = id;
+							data.sellerName = row.children[1].textContent;
+							data.minPrice = row.children[2].textContent;
+							data.maxPrice = row.children[3].textContent;
+						}
+					}
+				});
+				return data;
+			}          
+		</script>
+		{% endblock custom_js %}
