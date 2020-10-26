@@ -9,9 +9,16 @@ from sellers.models import Seller
 def saveSeller(request):
 	id=request.POST.get('id','')
 	seller=Seller.objects.get(id=id)
+	
 	seller.sellerName=request.POST.get('sellerName','')
+	seller.weekNumber=request.POST.get('weekNumber','')
 	seller.minPrice=request.POST.get('minPrice','')
-	seller.maxPrice = request.POST.get('maxPrice','')
+	seller.maxPrice=request.POST.get('maxPrice','')
+	seller.currentPrice=request.POST.get('currentPrice','')
+	seller.availabilityHour=request.POST.get('availabilityHour','')
+	seller.remainedHour=request.POST.get('remainedHour','')
+	seller.horizon=request.POST.get('horizon','')
+
 	seller.save()
 	
 	return JsonResponse({"success":"Updated"})

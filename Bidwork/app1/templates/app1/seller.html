@@ -12,16 +12,26 @@
 						<table class="table">
 							<tr>
 								<th>ID</th>
-								<th>Name</th>
+								<th>Seller</th>
+								<th>Week</th>
 								<th>Min</th>
 								<th>Max</th>
+								<th>Current</th>
+								<th>Availablity</th>
+								<th>Remained</th>
+								<th>Horizon</th>
 							</tr>
 							{% for seller in sellers %}
 							<tr id="tr_data">
 								<td>{{ seller.id }}</td>
 								<td class="editable" data-id="{{ seller.id }}" data-type="sellerName">{{ seller.sellerName }}</td>
-								<td class="editable" data-id="{{ seller.id }}" data-type="minPrice">{{ seller.minPrice }}</td>
-								<td class="editable" data-id="{{ seller.id }}" data-type="maxPrice">{{ seller.maxPrice }}</td>
+								<td class="editable" data-id="{{ seller.id }}" data-type="weekNumber">{{ seller.weekNumber }}</td>
+								<td class="editable" data-id="{{ seller.id }}" data-type="minPrice">{{ seller.minPrice }}</td>				
+								<td class="editable" data-id="{{ seller.id }}" data-type="maxPrice">{{ seller.maxPrice }}</td>				
+								<td class="editable" data-id="{{ seller.id }}" data-type="currentPrice">{{ seller.currentPrice }}</td>
+								<td class="editable" data-id="{{ seller.id }}" data-type="availabilityHour">{{ seller.availabilityHour }}</td>
+								<td class="editable" data-id="{{ seller.id }}" data-type="remainedHour">{{ seller.remainedHour }}</td>		
+								<td class="editable" data-id="{{ seller.id }}" data-type="horizon">{{ seller.horizon}}</td>
 								<td><a href="/deleteSeller/{{seller.id}}" class="btn btn-danger">Delete</a><br>
 									<input class="btn btn-success update-button" id='{{seller.id}}' value="Update" type="button" />
 								</td>
@@ -52,14 +62,11 @@
 		{% block custom_js %}
 		<script>
 			$(document).ready(function(){
-
 				$(document).on("dblclick",".editable",function(){
-
 					var value=$(this).text();
 					var data_type=$(this).data("type");
 					var input_type="text";
-					if(data_type=="created_at")
-					{
+					if(data_type=="created_at"){
 						input_type="datetime-local";
 					}
 					var input="<input name='selected_seller' type='"+input_type+"' class='input-data' value='"+value+"' class='form-control'>";
@@ -68,7 +75,6 @@
 				});
 
 				$(document).on("click",".update-button",function(e){
-
 					let id = $(this)[0]["id"];
 					sendToServer(id);
 				});
@@ -107,7 +113,6 @@
 
 			});
 			function do_serialize(id){
-
 				let data = {};
 				$('#form1').find('tr').each(function(){
 					if ($(this)[0].children[0].innerText === id){
@@ -115,8 +120,13 @@
 						if (row.children !== undefined){
 							data.id = id;
 							data.sellerName = row.children[1].textContent;
-							data.minPrice = row.children[2].textContent;
-							data.maxPrice = row.children[3].textContent;
+							data.weekNumber = row.children[2].textContent;
+							data.minPrice = row.children[3].textContent;
+							data.maxPrice = row.children[4].textContent;
+							data.currentPrice = row.children[5].textContent;
+							data.availabilityHour = row.children[6].textContent;
+							data.remainedHour = row.children[7].textContent;
+							data.horizon = row.children[8].textContent;
 						}
 					}
 				});

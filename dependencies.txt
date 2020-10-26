@@ -1,2 +1,4 @@
 django-crispy-forms
 Pillow
+pip install django-channels
+pip install xhtml2pdf
