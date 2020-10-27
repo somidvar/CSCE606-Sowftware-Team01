@@ -4,6 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from sellers.models import Seller
 from buyers.models import Buyer
+from django.shortcuts import redirect
+from django.http import HttpResponseRedirect, JsonResponse
 
 
 @csrf_exempt
@@ -23,6 +25,14 @@ def saveSeller(request):
 	seller.save()
 	
 	return JsonResponse({"success":"Updated"})
+
+@csrf_exempt
+def newSeller(request):
+	id=request.POST.get('id','')
+	newSeller=Seller()
+	newSeller.save()
+	return JsonResponse({"success":"Updated"})
+
 
 @csrf_exempt
 def saveBuyer(request):
