@@ -19,7 +19,6 @@
 								<th>Bid Hour</th>
 								<th>Bid Amount</th>
 								<th>Remained Balance</th>
-								<th>Initial Budget</th>
 							</tr>
 							{% for buyer in buyers %}
 							<tr id="tr_data">
@@ -30,7 +29,6 @@
 								<td class="editable" data-id="{{ buyer.id }}" data-type="bidHour">{{ buyer.bidHour }}</td>
 								<td  data-id="{{ buyer.id }}" data-type="bidAmount">{{ buyer.bidAmount }}</td>
 								<td  data-id="{{ buyer.id }}" data-type="remainedBalance">{{ buyer.remainedBalance }}</td>
-								<td  data-id="{{ buyer.id }}" data-type="initialBudget">{{ buyer.initialBudget}}</td>
 								<td><a href="/deleteBuyer/{{buyer.id}}" class="btn btn-danger">Delete</a><br>
 									<input class="btn btn-success update-button" id='{{buyer.id}}' value="Update" type="button" />
 								</td>
@@ -55,27 +53,18 @@
 								<th>ID</th>
 								<th>Seller</th>
 								<th>Week</th>
-								<th>Min</th>
-								<th>Max</th>
 								<th>Current</th>
 								<th>Availablity</th>
 								<th>Remained</th>
-								<th>Horizon</th>
 							</tr>
 							{% for seller in sellers %}
 							<tr id="tr_data">
 								<td>{{ seller.id }}</td>
 								<td  data-id="{{ seller.id }}" data-type="sellerName">{{ seller.sellerName }}</td>
 								<td  data-id="{{ seller.id }}" data-type="weekNumber">{{ seller.weekNumber }}</td>
-								<td  data-id="{{ seller.id }}" data-type="minPrice">{{ seller.minPrice }}</td>				
-								<td  data-id="{{ seller.id }}" data-type="maxPrice">{{ seller.maxPrice }}</td>				
 								<td  data-id="{{ seller.id }}" data-type="currentPrice">{{ seller.currentPrice }}</td>
 								<td  data-id="{{ seller.id }}" data-type="availabilityHour">{{ seller.availabilityHour }}</td>
-								<td  data-id="{{ seller.id }}" data-type="remainedHour">{{ seller.remainedHour }}</td>		
-								<td  data-id="{{ seller.id }}" data-type="horizon">{{ seller.horizon}}</td>
-								<td><a href="/deleteSeller/{{seller.id}}" class="btn btn-danger">Delete</a><br>
-									<input class="btn btn-success update-button" id='{{seller.id}}' value="Update" type="button" />
-								</td>
+								<td  data-id="{{ seller.id }}" data-type="remainedHour">{{ seller.remainedHour }}</td>	
 							</tr>
 							{% endfor %}
 						</table>
