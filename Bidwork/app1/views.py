@@ -46,6 +46,12 @@ def deleteSeller(request,sellerID):
 	messages.error(request, "Deleted Successfully")
 	return HttpResponseRedirect("/seller")
 
+def newSeller(request):
+	newseller1=Seller()
+	newseller1.save()
+	messages.success(request, "Added Successfully")
+	return HttpResponseRedirect("/seller")
+
 def buyer(request):
 	return render(request,'app1/buyer.html',{'buyers':Buyer.objects.all(),'sellers':Seller.objects.all()})
 
@@ -54,3 +60,9 @@ def deleteBuyer(request,buyerID):
 	buyer.delete()
 	messages.error(request, "Deleted Successfully")
 	return HttpResponseRedirect("/buyer")
+
+def newBuyer(request):
+	newbuyer=Buyer()
+	newbuyer.save()
+	messages.success(request, "Added Successfully")
+	return HttpResponseRedirect("/buyer")	

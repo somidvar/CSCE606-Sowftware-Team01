@@ -26,13 +26,6 @@ def saveSeller(request):
 	
 	return JsonResponse({"success":"Updated"})
 
-@csrf_exempt
-def newSeller(request):
-	id=request.POST.get('id','')
-	newSeller=Seller()
-	newSeller.save()
-	return JsonResponse({"success":"Updated"})
-
 
 @csrf_exempt
 def saveBuyer(request):

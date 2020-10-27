@@ -1,4 +1,4 @@
-{%extends "app1/baseSeller.html"%}
+{%extends "app1/baseSellerBuyer.html"%}
 
 {% block bodydata %}
 <div class="container">
@@ -41,6 +41,8 @@
 				</div>
 			</div>
 		</div>
+
+		<a href="/newBuyer" class="btn btn-success">Add</a>
 		
 		<div class="col-lg-12">
 			<div class="form-group bg_blue">
@@ -81,7 +83,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
+
+<!-- 		<div class="row">
 			<div class="col-lg-12">
 				<div class="form-group">
 					{% if messages %}
@@ -95,7 +98,7 @@
 					{% endif %}
 				</div>
 			</div>
-		</div>
+		</div> -->
 		{% endblock bodydata %}
 
 		{% block custom_js %}
