@@ -38,7 +38,7 @@ def aboutus(request):
 	return render(request,'app1/aboutus.html')
 
 def seller(request):
-	return render(request,'app1/seller.html',{'sellers':Seller.objects.all()})
+	return render(request,'app1/seller.html',{'buyers':Buyer.objects.all(),'sellers':Seller.objects.all()})
 
 def deleteSeller(request,sellerID):
 	seller=Seller.objects.get(id=sellerID)

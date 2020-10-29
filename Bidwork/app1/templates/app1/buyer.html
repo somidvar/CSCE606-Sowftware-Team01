@@ -12,9 +12,8 @@
 					<form id="form1">
 						<table class="table">
 							<tr>
-								<th>ID</th>
-								<th>Buyer</th>
-								<th>Week</th>
+								<th>Date Range</th>
+                                <th>Week</th>
 								<th>Bid Price</th>
 								<th>Bid Hour</th>
 								<th>Bid Amount</th>
@@ -22,9 +21,8 @@
 							</tr>
 							{% for buyer in buyers %}
 							<tr id="tr_data">
-								<td>{{ buyer.id }}</td>
-								<td  data-id="{{ buyer.id }}" data-type="buyerName">{{ buyer.buyerName }}</td>
-								<td class="editable" data-id="{{ buyer.id }}" data-type="weekNumber">{{ buyer.weekNumber }}</td>
+								<td class="editable" data-id="{{ buyer.id }}" data-type="dateRange">{{ buyer.dateRange }}</td>
+								<td  data-id="{{ buyer.id }}" data-type="weekNumber">{{ buyer.weekNumber }}</td>
 								<td  data-id="{{ buyer.id }}" data-type="bidPrice">{{ buyer.bidPrice }}</td>
 								<td class="editable" data-id="{{ buyer.id }}" data-type="bidHour">{{ buyer.bidHour }}</td>
 								<td  data-id="{{ buyer.id }}" data-type="bidAmount">{{ buyer.bidAmount }}</td>

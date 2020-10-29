@@ -15,6 +15,7 @@ def saveSeller(request):
 	
 	seller.sellerName=request.POST.get('sellerName','')
 	seller.weekNumber=request.POST.get('weekNumber','')
+	seller.dateRange=request.POST.get('dateRange','')
 	seller.minPrice=request.POST.get('minPrice','')
 	seller.maxPrice=request.POST.get('maxPrice','')
 	seller.currentPrice=request.POST.get('currentPrice','')
@@ -31,9 +32,10 @@ def saveSeller(request):
 def saveBuyer(request):
 	id=request.POST.get('id','')
 	buyer=Buyer.objects.get(id=id)
-	
+
 	buyer.buyerName=request.POST.get('sellerName','')
 	buyer.weekNumber=request.POST.get('weekNumber','')
+	buyer.dateRange = request.POST.get('dateRange', '')
 	buyer.bidPrice=request.POST.get('bidPrice','')
 	buyer.bidHour=request.POST.get('bidHour','')
 	buyer.bidAmount=request.POST.get('bidAmount','')

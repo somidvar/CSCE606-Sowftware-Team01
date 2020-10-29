@@ -11,9 +11,8 @@
 					<form id="form1">
 						<table class="table">
 							<tr>
-								<th>ID</th>
-								<th>Seller</th>
-								<th>Week</th>
+                                <th>Week</th>
+								<th>Date range</th>
 								<th>Min</th>
 								<th>Max</th>
 								<th>Current</th>
@@ -23,9 +22,8 @@
 							</tr>
 							{% for seller in sellers %}
 							<tr id="tr_data">
-								<td>{{ seller.id }}</td>
-								<td class="editable" data-id="{{ seller.id }}" data-type="sellerName">{{ seller.sellerName }}</td>
 								<td class="editable" data-id="{{ seller.id }}" data-type="weekNumber">{{ seller.weekNumber }}</td>
+								<td class="editable" data-id="{{ seller.id }}" data-type="dateRange">{{ seller.dateRange }}</td>
 								<td class="editable" data-id="{{ seller.id }}" data-type="minPrice">{{ seller.minPrice }}</td>				
 								<td class="editable" data-id="{{ seller.id }}" data-type="maxPrice">{{ seller.maxPrice }}</td>				
 								<td class="editable" data-id="{{ seller.id }}" data-type="currentPrice">{{ seller.currentPrice }}</td>
@@ -44,6 +42,35 @@
 		</div>
 
        <a href="/newSeller" class="btn btn-success">Add</a>
+
+		<div class="col-lg-12">
+			<div class="form-group bg_blue">
+				<h1><strong>Placed Bids</strong><h1>
+				</div>
+				<div class="table">
+					<form id="form1">
+						<table class="table">
+							<tr>
+                                <th>Buyer name</th>
+								<th>Week</th>
+								<th>Bid Hour</th>
+							</tr>
+							{% for buyer in buyers %}
+							<tr id="tr_data">
+								<td  data-id="{{ buyer.id }}" data-type="buyerName">{{ buyer.buyerName }}</td>
+								<td  data-id="{{ buyer.id }}" data-type="weekNumber">{{ buyer.weekNumber }}</td>
+								<td  data-id="{{ buyer.id }}" data-type="dateRange">{{ buyer.dateRange }}</td>
+								<td  data-id="{{ buyer.id }}" data-type="bidHour">{{ buyer.bidHour }}</td>
+
+
+								</td>
+							</tr>
+							{% endfor %}
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
 
 		{% endblock bodydata %}
 

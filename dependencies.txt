@@ -2,3 +2,5 @@ django-crispy-forms
 Pillow
 pip install django-channels
 pip install xhtml2pdf
+psycopg2
+pip3 install -r requirements.txt
