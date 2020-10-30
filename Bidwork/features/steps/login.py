@@ -12,26 +12,26 @@ def step_impl(context):
 	# Don't omit to call save() to insert object in database
 	u.save()
 
-# @when('I submit a valid login page')
-# def step_impl(context):
-# 	br = context.browser
-# 	br.get(context.base_url + '/login/')
-#
-# 	# Checks for Cross-Site Request Forgery protection input
-# 	assert br.find_element_by_name('csrfmiddlewaretoken').is_enabled()
-#
-# 	# Fill login form and submit it (valid version)
-# 	br.find_element_by_name('username').send_keys('foo')
-# 	br.find_element_by_name('password').send_keys('bar')
-# 	br.find_element_by_name('submit').click()
-#
-# @then('I am redirected to the login success page')
-# def step_impl(context):
-# 	br = context.browser
-#
-# 	# Checks success status
-# 	assert br.current_url.endswith('/login/success/')
-# 	assert br.find_element_by_id('main_title').text == "Login success"
+@when('I submit a valid login page')
+def step_impl(context):
+	br = context.browser
+	br.get(context.base_url + '/login/')
+
+	# Checks for Cross-Site Request Forgery protection input
+	assert br.find_element_by_name('csrfmiddlewaretoken').is_enabled()
+
+	# Fill login form and submit it (valid version)
+	br.find_element_by_name('username').send_keys('foo')
+	br.find_element_by_name('password').send_keys('bar')
+	br.find_element_by_name('submit').click()
+
+@then('I am redirected to the login success page')
+def step_impl(context):
+	br = context.browser
+
+	# Checks success status
+	assert br.current_url.endswith('/login/success/')
+	assert br.find_element_by_id('main_title').text == "Login success"
 
 @when('I submit an invalid login page')
 def step_impl(context):

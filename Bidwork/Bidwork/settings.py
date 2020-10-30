@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'login', # added by Zhenyu
+    'behave_django', # added by Zhenyu
     'app1.apps.App1Config',
     'users.apps.UsersConfig',
     'sellers.apps.SellersConfig',
