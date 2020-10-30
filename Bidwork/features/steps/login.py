@@ -15,7 +15,7 @@ def step_impl(context):
 @when('I submit a valid login page')
 def step_impl(context):
 	br = context.browser
-	br.get(context.base_url + '/login/')
+	br.get(context.base_url + '/login_test/')
 
 	# Checks for Cross-Site Request Forgery protection input
 	assert br.find_element_by_name('csrfmiddlewaretoken').is_enabled()
@@ -28,16 +28,16 @@ def step_impl(context):
 @then('I am redirected to the login success page')
 def step_impl(context):
 	br = context.browser
-
+	print(br.current_url)
 	# Checks success status
-	assert br.current_url.endswith('/login/success/')
+	assert br.current_url.endswith('/login_test/success/')
 	assert br.find_element_by_id('main_title').text == "Login success"
 
 @when('I submit an invalid login page')
 def step_impl(context):
 	br = context.browser
 
-	br.get(context.base_url + '/login/')
+	br.get(context.base_url + '/login_test/')
 
 	# Checks for Cross-Site Request Forgery protection input (once again)
 	assert br.find_element_by_name('csrfmiddlewaretoken').is_enabled()
@@ -52,5 +52,5 @@ def step_impl(context):
 	br = context.browser
 
 	# Checks redirection URL
-	assert br.current_url.endswith('/login/fail/')
+	assert br.current_url.endswith('/login_test/fail/')
 	assert br.find_element_by_id('main_title').text == "Login failure"

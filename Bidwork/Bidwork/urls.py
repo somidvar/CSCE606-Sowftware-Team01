@@ -30,12 +30,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', user_views.register, name='register'),
     path('profile/', user_views.profile, name='profile'),
-    # path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'), # commented by Zhenyu
+    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('', include('app1.urls')),
-    path('login/', login_views.login_root, name='login_root'), # added by Zhenyu
-    path('login/success/', login_views.login_success, name='login_success'), # added by Zhenyu
-    path('login/fail/', login_views.login_fail, name='login_fail') # added by Zhenyu
+    path('login_test/', login_views.login_root, name='login_root'), # added by Zhenyu
+    path('login_test/success/', login_views.login_success, name='login_success'), # added by Zhenyu
+    path('login_test/fail/', login_views.login_fail, name='login_fail') # added by Zhenyu
 ]
 
 
