@@ -28,7 +28,7 @@
 		      <div class="collapse navbar-collapse" id="navbarToggle">
 		        <div class="navbar-nav mr-auto">
 		          <a class="nav-item nav-link" href="{%url 'app1-home'%}">Home</a>
-		          <a class="nav-item nav-link" href="{%url 'app1-aboutus'%}">About</a>
+		          <a class="nav-item nav-link" name="aboutUs" href="{%url 'app1-aboutus'%}">About</a>
 		        </div>
 		        <!-- Navbar Right Side -->
 		        <div class="navbar-nav">
@@ -36,8 +36,8 @@
                 <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
                 <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
               {% else %}
-                <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                <a class="nav-item nav-link" name="login" href="{% url 'login' %}">Login</a>
+                <a class="nav-item nav-link" name="register" href="{% url 'register' %}">Register</a>
               {% endif %}
 		        </div>
 		      </div>
