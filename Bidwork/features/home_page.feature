@@ -1,4 +1,3 @@
-# Created by rahul at 11/4/20
 Feature: Home Page
 
   Scenario: Test services of Home Page

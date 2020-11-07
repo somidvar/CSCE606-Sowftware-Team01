@@ -2,10 +2,10 @@ Feature: Login form
 
   Scenario: Access the login form
 
-	Given an anonymous user
-	When I submit a valid login page
-	Then I am redirected to the login success page
+	Given a registered user on Login page
+	When I submit a login request
+	Then I should be directed to the Home page
 
-	Given an anonymous user
-	When I submit an invalid login page
-	Then I am redirected to the login fail page
+	Given an unregistered user on Login page
+	When I submit a login request
+	Then I should be redirected to the Login page and receive error message

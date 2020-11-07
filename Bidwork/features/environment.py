@@ -5,6 +5,7 @@ def before_all(context):
 	# For debugging purposes, you can use the Firefox driver instead.
 
 	context.browser = webdriver.PhantomJS()
+	context.browser.set_window_size(1920, 1080)
 	context.browser.implicitly_wait(1)
 	context.server_url = 'http://localhost:8000'
 

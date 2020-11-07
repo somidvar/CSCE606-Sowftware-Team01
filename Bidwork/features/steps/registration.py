@@ -1,7 +1,7 @@
 from behave import given, when, then
+from test.factories.user import UserFactory
 
-
-@given('an unregistered user')
+@given('an unregistered user on Registration page')
 def step_impl(context):
     context.username = "username"
     context.email = "username@email.com"
@@ -32,10 +32,19 @@ def step_impl(context):
 
 
 
-@given('a registered user')
+@given('a registered user on Registration page')
 def step_impl(context):
-    pass
+    user = UserFactory(username='username', email='username@email.com')
+    user.set_password('userPassword')
+    user.save()
+    context.username = "username"
+    context.email = "username@email.com"
+    context.password = "userPassword"
 
-@then('I should redirected to the Sign Up page and recieve an error message')
+@then('I should be redirected to the Registration page and receive error message')
 def step_impl(context):
-    pass
+    br = context.browser
+    errorMessage = "A user with that username already exists."
+    # Checks redirection URL and error message
+    assert br.current_url.endswith(context.base_url + "/register/")
+    assert br.find_element_by_id("error_1_id_username").text == errorMessage
