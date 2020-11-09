@@ -2,30 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e0936663-0226-4a72-b0ea-a2c6f11e4b52" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/Bidwork/features/admin.feature" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/Bidwork/settings.py" afterPath="$PROJECT_DIR$/Bidwork/Bidwork/settings.py" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/Bidwork/urls.py" afterPath="$PROJECT_DIR$/Bidwork/Bidwork/urls.py" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/app1/templates/app1/baseSellerBuyer.html" afterPath="$PROJECT_DIR$/Bidwork/app1/templates/app1/baseSellerBuyer.html" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/app1/templates/app1/baseWithAnnouncement.html" afterPath="$PROJECT_DIR$/Bidwork/app1/templates/app1/baseWithAnnouncement.html" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/features/environment.py" afterPath="$PROJECT_DIR$/Bidwork/features/environment.py" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/features/home_page.feature" afterPath="$PROJECT_DIR$/Bidwork/features/home_page.feature" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/features/login.feature" afterPath="$PROJECT_DIR$/Bidwork/features/login.feature" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/features/registration.feature" afterPath="$PROJECT_DIR$/Bidwork/features/registration.feature" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/features/steps/home_page.py" afterPath="$PROJECT_DIR$/Bidwork/features/steps/home_page.py" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/features/steps/login.py" afterPath="$PROJECT_DIR$/Bidwork/features/steps/login.py" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/features/steps/registration.py" afterPath="$PROJECT_DIR$/Bidwork/features/steps/registration.py" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/features/test/factories/user.py" afterPath="$PROJECT_DIR$/Bidwork/features/test/factories/user.py" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/login/__init__.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/login/admin.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/login/apps.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/login/migrations/__init__.py" afterPath="$PROJECT_DIR$/Bidwork/features/steps/admin.py" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/login/models.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/login/templates/login_fail.html" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/login/templates/login_root.html" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/login/templates/login_success.html" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/login/tests.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/Bidwork/login/views.py" afterPath="" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -96,7 +73,7 @@
       <file leaf-file-name="registration.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Bidwork/features/steps/registration.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
+            <state relative-caret-position="216">
               <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
               <folding>
                 <element signature="e#0#36#0" expanded="true" />
@@ -172,7 +149,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="1985" />
     <option name="y" value="-4" />
     <option name="width" value="1855" />
@@ -200,87 +177,6 @@
             <path>
               <item name="team01" type="b2602c69:ProjectViewProjectNode" />
               <item name="team01" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="team01" type="b2602c69:ProjectViewProjectNode" />
-              <item name="team01" type="462c0819:PsiDirectoryNode" />
-              <item name="Bidwork" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="team01" type="b2602c69:ProjectViewProjectNode" />
-              <item name="team01" type="462c0819:PsiDirectoryNode" />
-              <item name="Bidwork" type="462c0819:PsiDirectoryNode" />
-              <item name="app1" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="team01" type="b2602c69:ProjectViewProjectNode" />
-              <item name="team01" type="462c0819:PsiDirectoryNode" />
-              <item name="Bidwork" type="462c0819:PsiDirectoryNode" />
-              <item name="app1" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="team01" type="b2602c69:ProjectViewProjectNode" />
-              <item name="team01" type="462c0819:PsiDirectoryNode" />
-              <item name="Bidwork" type="462c0819:PsiDirectoryNode" />
-              <item name="app1" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="app1" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="team01" type="b2602c69:ProjectViewProjectNode" />
-              <item name="team01" type="462c0819:PsiDirectoryNode" />
-              <item name="Bidwork" type="462c0819:PsiDirectoryNode" />
-              <item name="Bidwork" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="team01" type="b2602c69:ProjectViewProjectNode" />
-              <item name="team01" type="462c0819:PsiDirectoryNode" />
-              <item name="Bidwork" type="462c0819:PsiDirectoryNode" />
-              <item name="features" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="team01" type="b2602c69:ProjectViewProjectNode" />
-              <item name="team01" type="462c0819:PsiDirectoryNode" />
-              <item name="Bidwork" type="462c0819:PsiDirectoryNode" />
-              <item name="features" type="462c0819:PsiDirectoryNode" />
-              <item name="steps" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="team01" type="b2602c69:ProjectViewProjectNode" />
-              <item name="team01" type="462c0819:PsiDirectoryNode" />
-              <item name="Bidwork" type="462c0819:PsiDirectoryNode" />
-              <item name="features" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="team01" type="b2602c69:ProjectViewProjectNode" />
-              <item name="team01" type="462c0819:PsiDirectoryNode" />
-              <item name="Bidwork" type="462c0819:PsiDirectoryNode" />
-              <item name="features" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="factories" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="team01" type="b2602c69:ProjectViewProjectNode" />
-              <item name="team01" type="462c0819:PsiDirectoryNode" />
-              <item name="Bidwork" type="462c0819:PsiDirectoryNode" />
-              <item name="users" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="team01" type="b2602c69:ProjectViewProjectNode" />
-              <item name="team01" type="462c0819:PsiDirectoryNode" />
-              <item name="Bidwork" type="462c0819:PsiDirectoryNode" />
-              <item name="users" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="team01" type="b2602c69:ProjectViewProjectNode" />
-              <item name="team01" type="462c0819:PsiDirectoryNode" />
-              <item name="Bidwork" type="462c0819:PsiDirectoryNode" />
-              <item name="users" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="users" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -345,8 +241,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1985" y="-4" width="1855" height="1084" extended-state="6" />
-    <editor active="true" />
+    <frame x="1985" y="-4" width="1855" height="1084" extended-state="7" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -354,7 +249,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25207296" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25207296" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -876,7 +771,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Bidwork/features/steps/registration.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
+        <state relative-caret-position="216">
           <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding>
             <element signature="e#0#36#0" expanded="true" />
