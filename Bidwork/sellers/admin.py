@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Seller
+from .models import Items, Biddings
 
 class SellerAdmin(admin.ModelAdmin):
-    list_display = ('sellerName','weekNumber', 'dateRange','minPrice', 'maxPrice','currentPrice', 'availabilityHour', 'remainedHour', 'horizon')
-admin.site.register(Seller, SellerAdmin)
+    list_display = ('Week_Number','Min_Price', 'Max_Price', 'Start_Date', 'End_Date','Total_Availibility','Post_Date')
+myModels = [Items, Biddings]  # iterable list
+admin.site.register(myModels)
