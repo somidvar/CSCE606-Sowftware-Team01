@@ -162,7 +162,7 @@
 				});
 				function sendToServer(id){
 					$.ajax({
-						url:"http://localhost:8000/saveBuyer",
+						url:window.location.href.replace("buyer","saveBuyer"),
 						type:"POST",
 						data:do_serialize(id),
 					})
