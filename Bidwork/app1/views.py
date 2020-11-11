@@ -72,7 +72,7 @@ def seller(request):
 	return render(request,'app1/seller.html',{'buyers':biddings1, 'sellers' : sellers1})
 
 def deleteSeller(request,sellerID):
-	seller=Seller.objects.get(id=sellerID)
+	seller=Items.objects.get(id=sellerID)
 	seller.delete()
 	messages.error(request, "Deleted Successfully")
 	return HttpResponseRedirect("/seller")
@@ -119,7 +119,7 @@ def buyer(request):
 	return render(request,'app1/buyer.html',{'buyers': myBids,'sellers':sellers1})
 
 def deleteBuyer(request,buyerID):
-	buyer=Buyer.objects.get(id=buyerID)
+	buyer=Biddings_B.objects.get(id=buyerID)
 	buyer.delete()
 	messages.error(request, "Deleted Successfully")
 	return HttpResponseRedirect("/buyer")
