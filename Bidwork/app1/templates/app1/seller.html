@@ -143,11 +143,12 @@
 					})
 					.done(function(response){
 						console.log(response);
-						alert("Record Updated")
+						//alert("Update succeeded")
 						location.reload();
 					})
 					.fail(function(){
 						console.log("Error Occured");
+						//alert("Update failed")
 					});
 				}
 

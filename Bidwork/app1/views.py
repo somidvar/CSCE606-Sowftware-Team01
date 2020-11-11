@@ -41,8 +41,8 @@ def aboutus(request):
 	return render(request,'app1/aboutus.html')
 
 def seller(request):
-	sellers1 = Items.objects.all()
-	for seller in sellers1:
+	sellersObjects = Items.objects.all()
+	for seller in sellersObjects:
 		if (seller.End_Date - seller.Start_Date) != datetime.timedelta(0):
 			seller.Current_price = float(seller.Max_Price) - ((float(seller.Max_Price)+ float(seller.Min_Price))*((timezone.now() - seller.Start_Date))/((seller.End_Date - seller.Start_Date)))
 			if seller.Current_price < float(seller.Min_Price):
@@ -68,8 +68,7 @@ def seller(request):
 		for bidding in biddings1:
 			bidding.Bidding_Date = bidding.Bidding_Date.strftime("%Y-%m-%d")
 
-
-	return render(request,'app1/seller.html',{'buyers':biddings1, 'sellers' : sellers1})
+	return render(request,'app1/seller.html',{'buyers':biddings1, 'sellers' : sellersObjects})
 
 def deleteSeller(request,sellerID):
 	seller=Items.objects.get(id=sellerID)
@@ -78,8 +77,17 @@ def deleteSeller(request,sellerID):
 	return HttpResponseRedirect("/seller")
 
 def newSeller(request):
-	newseller1=Items()
-	newseller1.save()
+	newSeller=Items()
+	sellers = Items.objects.all()
+	Max_Current_Week=1
+	if(sellers.count()>0):
+		for seller in sellers:
+			if(seller.Week_Number>Max_Current_Week):
+				Max_Current_Week=seller.Week_Number
+	newSeller.Week_Number=Max_Current_Week+1
+	newSeller.Start_Date=setWeekStartDay(newSeller.Week_Number)
+	newSeller.End_Date=setWeekStartDay(newSeller.Week_Number)
+	newSeller.save()
 	messages.success(request, "Added Successfully")
 	return HttpResponseRedirect("/seller")
 

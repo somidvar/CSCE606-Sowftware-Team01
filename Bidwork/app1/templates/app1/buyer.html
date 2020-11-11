@@ -21,9 +21,6 @@
 								<th>Bid Start Date</th>
 								<th>Bidding Execution Date</th>
 								<th>Bid Hours</th>
-		
-
-
 							</tr>
 							{% for seller in sellers %}
 							<tr id="tr_data">
@@ -168,11 +165,12 @@
 					})
 					.done(function(response){
 						console.log(response);
-						alert("Record Updated")
+						//alert("Update succeeded")
 						location.reload();
 					})
 					.fail(function(){
 						console.log("Error Occured");
+						//alert("Update failed")
 					});
 				}
 
