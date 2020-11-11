@@ -20,6 +20,7 @@
 								<th>Current Price</th>
 								<th>Total Availablity</th>
 								<th>Remaining availability</th>
+								<th>Last Modified</th>
 							</tr>
 							{% for seller in sellers %}
 							<tr id="tr_data">
@@ -33,6 +34,7 @@
 								<td data-id="{{ seller.id }}" data-type="Current_price">{{ seller.Current_price }}</td>
 								<td class="editable" data-id="{{ seller.id }}" data-type="Total_Availibility">{{ seller.Total_Availibility }}</td>
 								<td data-id="{{ seller.id }}" data-type="Remaining_availability">{{ seller.Remaining_Hours }}</td>
+								<td data-id="{{ seller.id }}" data-type="Post_Date">{{ seller.Post_Date }}</td>								
 								<td><a href="/deleteSeller/{{seller.id}}" class="btn btn-danger">Delete</a><br>
 									<input class="btn btn-success update-button" id='{{seller.id}}' value="Save" type="button" />
 								</td>

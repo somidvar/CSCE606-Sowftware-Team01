@@ -42,26 +42,26 @@ def saveSeller(request):
 
 	#start date validation
 	try:
-		Start_Date=datetime.datetime.strptime(Start_Date_Str, "%Y-%m-%d")
+		Start_Date=datetime.datetime.strptime(Start_Date_Str, "%Y-%m-%d %H:%M")
 	except Exception as e:
 		print(str(e))
-		messages.error(request, "The start date should be in Year-Month-Day")
+		messages.error(request, "The start date should be in Year-Month-Day Hour:Minute")
 		return JsonResponse({"error":"validation"})
 
 	#end date validation
 	try:
-		End_Date=datetime.datetime.strptime(End_Date_Str, "%Y-%m-%d")
+		End_Date=datetime.datetime.strptime(End_Date_Str, "%Y-%m-%d %H:%M")
 	except Exception as e:
 		print(str(e))
 
-		messages.error(request, "The end date should be in Year-Month-Day")
+		messages.error(request, "The end date should be in Year-Month-Day Hour:Minute")
 		return JsonResponse({"error":"validation"})
 
 	#week start date validation
 	Week_Start_Date=setWeekStartDay(Week_Number)
 
 	#start/end date comparison validation
-	if(Start_Date>End_Date):
+	if(Start_Date>=End_Date):
 		messages.error(request, "The end date should be later than start date")
 		return JsonResponse({"error":"validation"})	
 	#bidding execution and week_Number comparison validation

@@ -4,25 +4,29 @@ from decimal import Decimal
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.postgres.fields import DateRangeField
 from django.utils import timezone
+import pytz
+import datetime
 
-"""fix date range or change to start and end date"""
+
 class Items(models.Model): 
-    Week_Number = models.DecimalField(max_digits=5, decimal_places=0,default=Decimal('0'), validators=[MinValueValidator(1)])
+    TimeZone_Offset = -5
+    Current_DateTime=datetime.datetime.now()+datetime.timedelta(hours = TimeZone_Offset)
+
+    Week_Number = models.DecimalField(max_digits=2, decimal_places=0,default=Decimal('0'), validators=[MinValueValidator(0)])
     Min_Price = models.DecimalField(max_digits=5, decimal_places=2,default=Decimal('0.00'), validators=[MinValueValidator(0.01)])
     Max_Price = models.DecimalField(max_digits=5, decimal_places=2,default=Decimal('0.00'), validators=[MinValueValidator(0.01)])
-    Start_Date = models.DateTimeField(default=timezone.now)
-    End_Date = models.DateTimeField(default=timezone.now)
+    Start_Date = models.DateTimeField(default= Current_DateTime)
+    End_Date = models.DateTimeField(default= Current_DateTime)    
+    Post_Date = models.DateTimeField(default= Current_DateTime)
     Total_Availibility = models.DecimalField(max_digits=5, decimal_places=0,default=Decimal('0'), validators=[MinValueValidator(1)])
-    Post_Date = models.DateTimeField(default=timezone.now)
     
+
     class Meta:
         db_table = 'Items'
         managed = False
     
     def __str__(self):
       return f'{self.Week_Number}, {self.Min_Price}, {self.Max_Price}, {self.Start_Date}, {self.End_Date}, {self.Total_Availibility},{self.Post_Date}'
-
-
 
 
 class Biddings(models.Model):

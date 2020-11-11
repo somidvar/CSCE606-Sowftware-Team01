@@ -41,34 +41,43 @@ def aboutus(request):
 	return render(request,'app1/aboutus.html')
 
 def seller(request):
+	TimeZone_Offset = -5
+	Current_DateTime=datetime.datetime.now()+datetime.timedelta(hours = TimeZone_Offset)
+
 	sellersObjects = Items.objects.all()
-	for seller in sellersObjects:
-		if (seller.End_Date - seller.Start_Date) != datetime.timedelta(0):
-			seller.Current_price = float(seller.Max_Price) - ((float(seller.Max_Price)+ float(seller.Min_Price))*((timezone.now() - seller.Start_Date))/((seller.End_Date - seller.Start_Date)))
-			if seller.Current_price < float(seller.Min_Price):
-				seller.Current_price = float(seller.Min_Price)
-			elif seller.Current_price > float(seller.Max_Price): 
-				seller.Current_price = float(seller.Max_Price)
-		else:
-			seller.Current_price = float(seller.Max_Price)
+	Bids = Biddings_B.objects.all()
+	if(sellersObjects.count()>0):
+		for seller in sellersObjects:
 
-		Biddings = Biddings_B.objects.filter(Item_Id=seller.id)
-		if Biddings.count() == 0:
-			seller.Remaining_Hours = seller.Total_Availibility
-		remaining_time = seller.Total_Availibility
-		for bids in Biddings:
+			Bid_ElapsedTime=Current_DateTime- seller.Start_Date
+			Bid_Horizon=seller.End_Date- seller.Start_Date
+			Bid_Horizon=int(Bid_Horizon.total_seconds()/3600)
+			Bid_ElapsedTime=int(Bid_ElapsedTime.total_seconds()/3600)
+
+			if(Bid_ElapsedTime<=0):
+				seller.Current_price=seller.Max_Price
+			else:
+				Current_Price_Slope =(float(seller.Max_Price)- float(seller.Min_Price))*float(Bid_ElapsedTime/Bid_Horizon)
+				seller.Current_price=round(float(seller.Max_Price)-Current_Price_Slope,2)
+
+
+			Biddings = Biddings_B.objects.filter(Item_Id=seller.id)
+			if Biddings.count() == 0:
+				seller.Remaining_Hours = seller.Total_Availibility
+			remaining_time = seller.Total_Availibility
+			for bids in Biddings:
 				remaining_time = remaining_time - bids.Hours
-		seller.Remaining_Hours = remaining_time
+			seller.Remaining_Hours = remaining_time
 
-		seller.Week_Start_Date = setWeekStartDay(seller.Week_Number).strftime("%Y-%m-%d")
-		seller.Start_Date = seller.Start_Date.strftime("%Y-%m-%d")
-		seller.End_Date = seller.End_Date.strftime("%Y-%m-%d")
+			seller.Week_Start_Date = setWeekStartDay(seller.Week_Number).strftime("%Y-%m-%d")
+			seller.Start_Date = seller.Start_Date.strftime("%Y-%m-%d %H:%M")
+			seller.End_Date = seller.End_Date.strftime("%Y-%m-%d %H:%M")
 
-		biddings1 = Biddings_B.objects.all()
-		for bidding in biddings1:
-			bidding.Bidding_Date = bidding.Bidding_Date.strftime("%Y-%m-%d")
+			for Bid in Bids:
+				Bid.Bidding_Date = Bid.Bidding_Date.strftime("%Y-%m-%d %H:%M")
 
-	return render(request,'app1/seller.html',{'buyers':biddings1, 'sellers' : sellersObjects})
+
+	return render(request,'app1/seller.html',{'buyers':Bids, 'sellers' : sellersObjects})
 
 def deleteSeller(request,sellerID):
 	seller=Items.objects.get(id=sellerID)
@@ -79,21 +88,24 @@ def deleteSeller(request,sellerID):
 def newSeller(request):
 	newSeller=Items()
 	sellers = Items.objects.all()
-	Max_Current_Week=1
+	Max_Week=0
 	if(sellers.count()>0):
 		for seller in sellers:
-			if(seller.Week_Number>Max_Current_Week):
-				Max_Current_Week=seller.Week_Number
-	newSeller.Week_Number=Max_Current_Week+1
-	newSeller.Start_Date=setWeekStartDay(newSeller.Week_Number)
-	newSeller.End_Date=setWeekStartDay(newSeller.Week_Number)
+			if(seller.Week_Number>Max_Week):
+				Max_Week=seller.Week_Number
+	if (Max_Week+1>53):
+		Max_Week=0
+	
+	newSeller.Week_Number=Max_Week+1
+	newSeller.Start_Date=setWeekStartDay(newSeller.Week_Number-2)
+	newSeller.End_Date=setWeekStartDay(newSeller.Week_Number-1)
 	newSeller.save()
 	messages.success(request, "Added Successfully")
 	return HttpResponseRedirect("/seller")
 
 def setWeekStartDay(Week_Number):
-	start_date = "12/29/19"	
-	date_1 = datetime.datetime.strptime(start_date, "%m/%d/%y")
+	start_date = "2019-12-29"	
+	date_1 = datetime.datetime.strptime(start_date, "%Y-%m-%d")
 	offset = ((Week_Number-1) * 7)
 	date2 = date_1 + datetime.timedelta(days = int(offset))
 	return date2
