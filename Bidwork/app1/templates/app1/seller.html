@@ -9,18 +9,18 @@
 				</div>
 				<div class="table">
 					<form id="form1">
-						<table class="table">
+						<table class="table table-sortable">
 							<tr>
-                                <th>Week Number</th>
-								<th>Week Start Day</th>
-								<th>Bidding Start Date</th>
-								<th>Bidding Execution Date</th>
-								<th>Min Price</th>
-								<th>Max Price</th>
-								<th>Current Price</th>
-								<th>Total Availablity</th>
-								<th>Remaining availability</th>
-								<th>Last Modified</th>
+                                <th data-column="Week_Number" data-order="desc">Week Number</th>
+								<th data-column="Week_Start_Date" data-order="desc">Week Start Day</th>
+								<th data-column="Start_Date" data-order="desc">Bidding Start Date</th>
+								<th data-column="End_Date" data-order="desc">Bidding Execution Date</th>
+								<th data-column="Min_Price" data-order="desc">Min Price</th>
+								<th data-column="Max_Price" data-order="desc">Max Price</th>
+								<th data-column="Current_price" data-order="desc">Current Price</th>
+								<th data-column="Total_Availibility" data-order="desc">Total Availablity</th>
+								<th data-column="Remaining_Hours" data-order="desc">Remaining availability</th>
+								<th data-column="Post_Date" data-order="desc">Last Modified</th>
 							</tr>
 							{% for seller in sellers %}
 							<tr id="tr_data">
@@ -85,6 +85,19 @@
 
 		{% block custom_js %}
 		<script>
+            <!-- script to allow sort columns -->
+            $('th').on('click', function(){
+                var column = $(this).data('column')
+                var order = $(this).data('order')
+                console.log('column was clicked!', column, order)
+
+                if(order == 'desc') {
+                    $(this).data('order', "asc")
+                }else{
+                    $(this).data('order', "desc")
+                }
+            })
+
 			$(document).ready(function(){
 				$(document).on("dblclick",".editable",function(){
 					var value=$(this).text();

@@ -28,6 +28,18 @@
 					<div class="navbar-nav mr-auto">
 						<a class="nav-item nav-link" name="home" href="{%url 'app1-home'%}">Home</a>
 						<a class="nav-item nav-link" name="aboutUs" href="{%url 'app1-aboutus'%}">About</a>
+                        {% if user.is_authenticated %}
+                          {%if user.is_staff %}
+                              {%if user.is_superuser%}
+                                  <a class="nav-item nav-link" name="seller" href="{%url 'app1-seller'%}">Seller page</a>
+                                  <a class="nav-item nav-link" name="admin" href={% url 'admin:index' %}>admin</a>
+                              {%else %}
+                                  <a class="nav-item nav-link" name="buyer" href="{%url 'app1-buyer'%}">Buyer page</a>
+                              {%endif%}
+                          {%else%}
+                              <a class="nav-item nav-link" name="buyer" href="{%url 'app1-buyer'%}">Buyer page</a>
+                          {%endif%}
+                        {%endif%}
 					</div>
 					<!-- Navbar Right Side -->
 					<div class="navbar-nav">
