@@ -6,14 +6,14 @@ from django.contrib.postgres.fields import DateRangeField
 from MyTimeFunctions import *
 
 class Items_B(models.Model):
-    Week_Number = models.IntegerField(default=1, validators=[MinValueValidator(1)])
-    Min_Price = models.DecimalField(max_digits=10, decimal_places=2,default=Decimal('0.00'), validators=[MinValueValidator(0.01)])
-    Max_Price = models.DecimalField(max_digits=10, decimal_places=2,default=Decimal('0.00'), validators=[MinValueValidator(0.01)])
-    Total_Availibility = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-    Remaining_Availibility = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-    Start_Date = models.DateTimeField(default= MyCurrentTime())
-    End_Date = models.DateTimeField(default= MyCurrentTime())    
-    Post_Date = models.DateTimeField(default= MyCurrentTime())
+    Week_Number = models.IntegerField()
+    Min_Price = models.DecimalField(max_digits=10, decimal_places=2)
+    Max_Price = models.DecimalField(max_digits=10, decimal_places=2)
+    Total_Availibility = models.IntegerField()
+    Remaining_Availibility = models.IntegerField()
+    Start_Date = models.DateTimeField()
+    End_Date = models.DateTimeField()    
+    Post_Date = models.DateTimeField()
         
     class Meta:
       db_table = 'Items'
@@ -23,12 +23,12 @@ class Items_B(models.Model):
       return f'{self.Week_Number}, {self.Min_Price}, {self.Max_Price}, {self.Total_Availibility}, {self.Remaining_Availibility}, {self.Start_Date}, {self.End_Date},{self.Post_Date}'
 
 class Biddings_B(models.Model):
-    Bidding_Date = models.DateTimeField(default= MyCurrentTime())
-    Week_Number = models.IntegerField(default=1, validators=[MinValueValidator(1)])
-    Buyer_Id = models.IntegerField(default=0,validators=[MinValueValidator(0)])
-    Price = models.DecimalField(max_digits=10,decimal_places=2,default=Decimal('0.00'), validators=[MinValueValidator(0.00)])
-    Hours = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-    Item_Id = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+    Bidding_Date = models.DateTimeField()
+    Week_Number = models.IntegerField()
+    Buyer_Id = models.IntegerField()
+    Price = models.DecimalField(max_digits=10,decimal_places=2)
+    Hours = models.IntegerField()
+    Item_Id = models.IntegerField()
 
     class Meta:
       db_table = 'Biddings'
