@@ -15,7 +15,7 @@ from users.models import Profile
 @csrf_exempt
 def saveSell(request):
 	id=request.POST.get('id','')
-	currentSeller=Items.objects.get(id=id)
+	currentSell=Items.objects.get(id=id)
 	sellers=Items.objects.all()
 
 	Week_Number=Decimal(request.POST.get('Week_Number',''))
@@ -27,7 +27,7 @@ def saveSell(request):
 
 	#Week_Number validation
 	for seller in sellers:
-		if(Week_Number==seller.Week_Number and seller.id!=currentSeller.id):
+		if(Week_Number==seller.Week_Number and seller.id!=currentSell.id):
 			messages.error(request, "Week number is repeated")
 			return JsonResponse({"error":"validation"})
 	#min and max price validation
@@ -37,6 +37,14 @@ def saveSell(request):
 	if(Max_Price<Min_Price):
 		messages.error(request, "Min price should be bigger than max")
 		return JsonResponse({"error":"validation"})
+	#Checking to make sure that the update does not go under what it is already bidded
+	bids=Biddings.objects.filter(Item_Id=currentSell.id)
+	totalBidHour=0
+	for bid in bids:
+		totalBidHour=totalBidHour+bid.Hours
+	if(Total_Availibility<totalBidHour):
+		messages.error(request, ("The total availibility should be greater than currently bidded of "+str(totalBidHour)+" hours"))
+		return JsonResponse({"error":"validation"})			
 	#total availibility validation
 	if(Total_Availibility<0 or Total_Availibility>24*7):
 		messages.error(request, "The total availibility should be between 0 and 168 hours")
@@ -68,17 +76,17 @@ def saveSell(request):
 		messages.error(request, "The bidding should be executed before the start date of the work")
 		return JsonResponse({"error":"validation"})	
 
-	currentSeller.Week_Number=Week_Number
-	currentSeller.Start_Date=Start_Date
-	currentSeller.End_Date=End_Date
-	currentSeller.Min_Price=Min_Price
-	currentSeller.Max_Price=Max_Price
-	currentSeller.Total_Availibility=Total_Availibility
-	currentSeller.Remaining_Availibility = Total_Availibility
-	bids=Biddings.objects.filter(Item_Id=currentSeller.id)
+	currentSell.Week_Number=Week_Number
+	currentSell.Start_Date=Start_Date
+	currentSell.End_Date=End_Date
+	currentSell.Min_Price=Min_Price
+	currentSell.Max_Price=Max_Price
+	currentSell.Total_Availibility=Total_Availibility
+	currentSell.Remaining_Availibility = Total_Availibility
+	bids=Biddings.objects.filter(Item_Id=currentSell.id)
 	for bid in bids:
-		currentSeller.Remaining_Availibility=currentSeller.Total_Availibility-bid.Hours
-	currentSeller.save()
+		currentSell.Remaining_Availibility=currentSell.Total_Availibility-bid.Hours
+	currentSell.save()
 	messages.success(request, "Updated")
 	return JsonResponse({"success":"Updated"})
 

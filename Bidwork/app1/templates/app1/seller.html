@@ -39,13 +39,11 @@
 									<td data-id="{{ sell.0 }}" data-type="Post_Date">{{ sell.10 }}</td>
 									{% if sell.11 == "1" %}
 										<td><a href="/deleteSell/{{sell.0}}" class="btn btn-danger">Delete</a><br>
-											<input class="btn btn-success update-button" id='{{sell.0}}' value="Save" type="button" />
-										</td>
 									{%else%}
 										<td><input href="/deleteSell/{{sell.0}}" class="btn btn-danger delete-button" id='{{sell.0}}' value="Delete" type="button" disabled >
-												<input class="btn btn-success update-button" id='{{sell.0}}' value="Save" type="button" disabled/>
-										</td>
 									{%endif%}
+									<input class="btn btn-success update-button" id='{{sell.0}}' value="Save" type="button"/>
+									</td>
 								</tr>
 								{% endfor %}
 							</table>

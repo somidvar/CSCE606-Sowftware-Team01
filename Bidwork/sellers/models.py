@@ -36,13 +36,3 @@ class Biddings(models.Model):
 
     def __str__(self):
       return f'{self.Bidding_Date}, {self.Week_Number}, {self.Buyer_Id}, {self.Price}, {self.Hours}, {self.Item_Id}'
-
-class Buyers(models.Model):
-    Spent = models.DecimalField(max_digits=5, decimal_places=0,default=Decimal('0'), validators=[MinValueValidator(1)])
-    Budget = models.DecimalField(max_digits=5, decimal_places=0,default=Decimal('0'), validators=[MinValueValidator(1)])
-    class Meta:
-      db_table = 'Buyers'
-      managed = False
-
-    def __str__(self):
-      return f'{self.Spent},{self.Budget}'

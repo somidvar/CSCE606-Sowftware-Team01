@@ -3,18 +3,14 @@ from django.http import HttpResponse
 from datetime import datetime
 from django.utils import timezone
 
-import os, sys
+import os, sys, json
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
-from MyTimeFunctions import *
-
-from sellers.models import Items, Biddings,Buyers
+from sellers.models import Items, Biddings
 from buyers.models import Items_B, Biddings_B
 from users.models import Profile
-
-import json
 
 from django.contrib import messages
 from django.core import serializers
@@ -33,7 +29,7 @@ from requests import request
 from decimal import *
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-
+from MyTimeFunctions import *
 
 
 def home(request):
@@ -64,9 +60,6 @@ def seller(request):
 					Current_Price_Slope =(float(sell.Max_Price)- float(sell.Min_Price))*float(Bid_ElapsedTime/Bid_Horizon)
 					sell.Current_price=round(float(sell.Max_Price)-Current_Price_Slope,2)
 
-			if(sell.Start_Date<MyCurrentTime()):
-				sellisEditable=0
-
 			sell.Week_Start_Date = setWeekStartDay(sell.Week_Number).strftime("%Y-%m-%d")
 			sell.Start_Date = sell.Start_Date.strftime("%Y-%m-%d %H:%M")
 			sell.End_Date = sell.End_Date.strftime("%Y-%m-%d %H:%M")
@@ -81,7 +74,6 @@ def seller(request):
 				bid.Bidding_Date = bid.Bidding_Date.strftime("%Y-%m-%d %H:%M")
 			sell.Remaining_Availibility = remaining_time
 
-			
 			if(bids.count()>0):
 				sellisEditable=0			
 
