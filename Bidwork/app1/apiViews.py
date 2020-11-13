@@ -9,6 +9,8 @@ from django.http import HttpResponseRedirect, JsonResponse
 from app1 import views
 from decimal import *
 import datetime
+from django.contrib.auth.models import User
+from users.models import Profile
 
 @csrf_exempt
 def saveSell(request):
@@ -93,15 +95,28 @@ def saveBid(request):
 	bid.Buyer_Id = request.user.id
 	bid.Price = Decimal(request.POST.get('Price', ''))
 	bid.Hours=int(request.POST.get('Bid_Hours',''))
-
 	bid.Item_Id = request.POST.get('id','')
 	bid.save()
 	
-	sells=Items_B.objects.filter(id=id)
-	for sell in sells:
-		sell.Remaining_Availibility=sell.Remaining_Availibility-bid.Hours
-	sell.save()
-	return JsonResponse({"success":"Updated"})	
+
+	UserTemp=User.objects.get(id=request.user.id)
+	User_Profile= Profile.objects.get(user=UserTemp)
+	Current_User_Budget=round(User_Profile.budget,2)
+
+	if(Current_User_Budget<bid.Price*bid.Hours):
+		bid.delete()
+		return JsonResponse({"error":"Not enough budget"})	
+	else:
+		sells=Items_B.objects.filter(id=id)
+		for sell in sells:
+			sell.Remaining_Availibility=sell.Remaining_Availibility-bid.Hours
+		sell.save()
+
+		User_Profile.spent=User_Profile.budget+bid.Price*bid.Hours
+		User_Profile.budget=Current_User_Budget-bid.Price*bid.Hours
+		User_Profile.save()
+		UserTemp.save()
+		return JsonResponse({"success":"Updated"})	
 
 @csrf_exempt
 def setWeekStartDay(Week_Number):

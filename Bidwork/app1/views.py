@@ -70,12 +70,19 @@ def seller(request):
 			if bids.count() == 0:
 				sell.Remaining_Hours = sell.Total_Availibility
 			remaining_time = sell.Total_Availibility
+
 			for bid in bids:
 				remaining_time = remaining_time - bid.Hours
 				bid.Bidding_Date = bid.Bidding_Date.strftime("%Y-%m-%d %H:%M")
 			sell.Remaining_Availibility = remaining_time
+
 	bids = Biddings.objects.all()
-	return render(request,'app1/seller.html',{'bidsObjects':bids, 'sellsObjects' : sells})
+	bidDetails =[]
+	for bid in bids:
+		UserTemp=User.objects.get(id=bid.Buyer_Id)
+		bidDetails.append([str(bid.Week_Number),str(bid.Hours),str(UserTemp.username),str(bid.Price),str(bid.Bidding_Date)])
+
+	return render(request,'app1/seller.html',{'bidsObjects':bidDetails, 'sellsObjects' : sells})
 
 def deleteSell(request,sellID):
 	sell=Items.objects.get(id=sellID)
@@ -84,8 +91,10 @@ def deleteSell(request,sellID):
 		UserTemp=User.objects.get(id=bid.Buyer_Id)
 		User_Profile= Profile.objects.get(user=UserTemp)
 		User_Profile.budget=User_Profile.budget+bid.Price*bid.Hours
+		User_Profile.save()
+		UserTemp.save()
+		bid.delete()
 
-	bids.delete()
 	sell.delete()
 	messages.error(request, "Deleted Successfully")
 	return HttpResponseRedirect("/seller")
@@ -160,8 +169,7 @@ def deleteBid(request,bidID):
 def newBid(request):
 	newBid=Biddings_B()
 	newBid.save()
-	messages.success(request, "Added Successfully")
-	HttpResponseRedirect("/buyer")	
+	#messages.error(request, "The budget is not enough")
 	return newBid.id
 
 def Buyer_Profile_Instantiating():

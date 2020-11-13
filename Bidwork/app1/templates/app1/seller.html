@@ -59,18 +59,18 @@
 										<th>Week Number</th>
 										<th>Bid Hour</th>
 										<th>Buyer name</th>
-										<th>Price</th>
+										<th>Unit Price</th>
 										<th>Post Date</th>
 									</tr>
 									{% for bid in bidsObjects %}
 									<tr id="tr_data">
-										<td  data-id="{{ bid.id }}" data-type="Week_Number">{{ bid.Week_Number }}</td>
-										<td  data-id="{{ bid.id }}" data-type="Hours">{{ bid.Hours }}</td>
-										<td  data-id="{{ bid.id }}" data-type="Buyer_Id">{{ bid.Buyer_Id }}</td>
-										<td  data-id="{{ bid.id }}" data-type="Price">{{ bid.Price }}</td>
-										<td  data-id="{{ bid.id }}" data-type="Bidding_Date">{{ bid.Bidding_Date }}</td>
+										<td  data-id="{{ bid.id }}" data-type="Week_Number">{{ bid.0 }}</td>
+										<td  data-id="{{ bid.id }}" data-type="Hours">{{ bid.1 }}</td>
+										<td  data-id="{{ bid.id }}" data-type="userNames">{{bid.2}}</td>
+										<td  data-id="{{ bid.id }}" data-type="Price">{{ bid.3 }}</td>
+										<td  data-id="{{ bid.id }}" data-type="Bidding_Date">{{ bid.4 }}</td>
 									</tr>
-									{% endfor %}
+									{% endfor %}									
 								</table>
 							</form>
 						</div>
