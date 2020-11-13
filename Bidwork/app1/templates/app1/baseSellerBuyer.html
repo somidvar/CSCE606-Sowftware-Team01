@@ -28,55 +28,50 @@
 					<div class="navbar-nav mr-auto">
 						<a class="nav-item nav-link" name="home" href="{%url 'app1-home'%}">Home</a>
 						<a class="nav-item nav-link" name="aboutUs" href="{%url 'app1-aboutus'%}">About</a>
-                        {% if user.is_authenticated %}
-                          {%if user.is_staff %}
-                              {%if user.is_superuser%}
-                                  <a class="nav-item nav-link" name="seller" href="{%url 'app1-seller'%}">Seller page</a>
-                                  <a class="nav-item nav-link" name="admin" href={% url 'admin:index' %}>admin</a>
-                              {%else %}
-                                  <a class="nav-item nav-link" name="buyer" href="{%url 'app1-buyer'%}">Buyer page</a>
-                              {%endif%}
-                          {%else%}
-                              <a class="nav-item nav-link" name="buyer" href="{%url 'app1-buyer'%}">Buyer page</a>
-                          {%endif%}
-                        {%endif%}
+						{% if user.is_authenticated %}
+							{%if user.is_staff %}
+								{%if user.is_superuser%}
+									<a class="nav-item nav-link" name="seller" href="{%url 'app1-seller'%}">Seller page</a>
+									<a class="nav-item nav-link" name="admin" href="{% url 'admin:index' %}">admin</a>
+								{%else %}
+									<a class="nav-item nav-link" name="buyer" href="{%url 'app1-buyer'%}">Buyer page</a>
+								{%endif%}
+							{%else%}
+								<a class="nav-item nav-link" name="buyer" href="{%url 'app1-buyer'%}">Buyer page</a>
+							{%endif%}
+						{%endif%}						
 					</div>
-					<!-- Navbar Right Side -->
 					<div class="navbar-nav">
 						{% if user.is_authenticated %}
-						<a class="nav-item nav-link" name="profile" href="{% url 'profile' %}">Profile</a>
-						<a class="nav-item nav-link" name="logout" href="{% url 'logout' %}">Logout</a>
+							<a class="nav-item nav-link" name="profile" href="{% url 'profile' %}">Profile</a>
+							<a class="nav-item nav-link" name="logout" href="{% url 'logout' %}">Logout</a>
 						{% else %}
-						<a class="nav-item nav-link" name="login" href="{% url 'login' %}">Login</a>
-						<a class="nav-item nav-link" name="register" href="{% url 'register' %}">Register</a>
+							<a class="nav-item nav-link" name="login" href="{% url 'login' %}">Login</a>
+							<a class="nav-item nav-link" name="register" href="{% url 'register' %}">Register</a>
 						{% endif %}
 					</div>
 				</div>
 			</div>
 		</nav>
 	</header>
-
-
 	<main role="main" class="container">
 		<div class="row">
 			<div class="col-md-8">
-					{% if messages %}
-						{% for message in messages %}
-							{% if message.tags == 'success' %}
-								<div class="alert alert-success" name="accountCreated">{{ message }}</div>
-							{% elif message.tags == 'error' %}
-								<div class="alert alert-danger">{{ message }}</div>
-							{% endif %}
-						{% endfor %}
-					{% endif %}
+				{% if messages %}
+				{% for message in messages %}
+				{% if message.tags == 'success' %}
+				<div class="alert alert-success" name="accountCreated">{{ message }}</div>
+				{% elif message.tags == 'error' %}
+				<div class="alert alert-danger">{{ message }}</div>
+				{% endif %}
+				{% endfor %}
+				{% endif %}
 				{% block content %}{% endblock %}
 			</div>
 
 		</div>
 	</div>
 </main>
-
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>		

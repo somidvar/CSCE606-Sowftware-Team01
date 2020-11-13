@@ -3,15 +3,17 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from sellers.models import Items, Biddings
-from buyers.models import  Items_B, Biddings_B, Buyers_B
+from buyers.models import  Items_B, Biddings_B
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect, JsonResponse
 from app1 import views
 from decimal import *
 import datetime
+from django.contrib.auth.models import User
+from users.models import Profile
 
 @csrf_exempt
-def saveSeller(request):
+def saveSell(request):
 	id=request.POST.get('id','')
 	currentSeller=Items.objects.get(id=id)
 	sellers=Items.objects.all()
@@ -75,30 +77,46 @@ def saveSeller(request):
 	currentSeller.Min_Price=Min_Price
 	currentSeller.Max_Price=Max_Price
 	currentSeller.Total_Availibility=Total_Availibility
-
+	currentSeller.Remaining_Availibility = Total_Availibility
+	bids=Biddings.objects.filter(Item_Id=currentSeller.id)
+	for bid in bids:
+		currentSeller.Remaining_Availibility=currentSeller.Total_Availibility-bid.Hours
 	currentSeller.save()
 	messages.success(request, "Updated")
 	return JsonResponse({"success":"Updated"})
 
-
 @csrf_exempt
-def saveBuyer(request):
-	
+def saveBid(request):
 	id=request.POST.get('id','')
-	new_id = views.newBuyer(request)
-	buyer=Biddings_B.objects.get(id=new_id)
-	buyer.Week_Number=request.POST.get('Week_Number','')
-	buyer.Week_Start_Date=request.POST.get('Week_Start_Date','')
-	buyer.Price = request.POST.get('Price', '')
-	buyer.Buyer_Id=request.POST.get('Week_Number','')
-	buyer.Remaining_Hours=request.POST.get('Remaining_Hours','')
-	buyer.Bidding_Date=request.POST.get('Bidding_Date','')
-	buyer.Hours=request.POST.get('Bid_Hours','')
-	buyer.Buyer_Id = request.user.id
-	buyer.Item_Id = request.POST.get('id','')
-	buyer.save()
+	new_id = views.newBid(request)
+	bid=Biddings_B.objects.get(id=new_id)
+	bid.Bidding_Date=request.POST.get('Bidding_Date','')#datetime.strptime
+	bid.Week_Number=int(request.POST.get('Week_Number',''))
+	bid.Buyer_Id = request.user.id
+	bid.Price = Decimal(request.POST.get('Price', ''))
+	bid.Hours=int(request.POST.get('Bid_Hours',''))
+	bid.Item_Id = request.POST.get('id','')
+	bid.save()
 	
-	return JsonResponse({"success":"Updated"})	
+
+	UserTemp=User.objects.get(id=request.user.id)
+	User_Profile= Profile.objects.get(user=UserTemp)
+	Current_User_Budget=round(User_Profile.budget,2)
+
+	if(Current_User_Budget<bid.Price*bid.Hours):
+		bid.delete()
+		return JsonResponse({"error":"Not enough budget"})	
+	else:
+		sells=Items_B.objects.filter(id=id)
+		for sell in sells:
+			sell.Remaining_Availibility=sell.Remaining_Availibility-bid.Hours
+		sell.save()
+
+		User_Profile.spent=User_Profile.budget+bid.Price*bid.Hours
+		User_Profile.budget=Current_User_Budget-bid.Price*bid.Hours
+		User_Profile.save()
+		UserTemp.save()
+		return JsonResponse({"success":"Updated"})	
 
 @csrf_exempt
 def setWeekStartDay(Week_Number):

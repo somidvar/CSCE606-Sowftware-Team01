@@ -33,13 +33,13 @@
                         {%if user.is_staff %}
                             {%if user.is_superuser%}
                                 <a class="nav-item nav-link" name="seller" href="{%url 'app1-seller'%}">Seller page</a>
-                                <a class="nav-item nav-link" name="admin" href={% url 'admin:index' %}>admin</a>
+                                <a class="nav-item nav-link" name="admin" href="{% url 'admin:index' %}">admin</a>
                             {%else %}
                                 <a class="nav-item nav-link" name="buyer" href="{%url 'app1-buyer'%}">Buyer page</a>
                             {%endif%}
                         {%else%}
                             <a class="nav-item nav-link" name="buyer" href="{%url 'app1-buyer'%}">Buyer page</a>
-                        {%endif%}
+                    	{%endif%}
                     {%endif%}
 		        </div>
 		        <!-- Navbar Right Side -->

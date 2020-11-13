@@ -6,12 +6,12 @@ urlpatterns = [
     path('aboutus', views.aboutus,name='app1-aboutus'),
 
     path('seller', views.seller,name='app1-seller'),
-    path('saveSeller', apiViews.saveSeller, name='saveSeller'),
-    path('deleteSeller/<str:sellerID>', views.deleteSeller, name="deleteSeller"),
-    path('newSeller', views.newSeller, name='newSeller'),
+    path('saveSell', apiViews.saveSell, name='saveSell'),
+    path('deleteSell/<str:sellID>', views.deleteSell, name="deleteSell"),
+    path('newSell', views.newSell, name='newSell'),
 
     path('buyer', views.buyer,name='app1-buyer'),
-    path('saveBuyer', apiViews.saveBuyer, name='saveBuyer'),
-    path('deleteBuyer/<str:buyerID>', views.deleteBuyer, name="deleteBuyer"),
-    path('newBuyer', views.newBuyer, name='newBuyer'),
+    path('saveBid', apiViews.saveBid, name='saveBid'),
+    path('deleteBid/<str:bidID>', views.deleteBid, name="deleteBid"),
+    path('newBid', views.newBid, name='newBid'),
 ]
