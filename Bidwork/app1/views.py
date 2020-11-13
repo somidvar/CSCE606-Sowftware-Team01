@@ -111,9 +111,19 @@ def newSell(request):
 		for sell in sells:
 			if(sell.Week_Number>=Max_Week):
 				Max_Week=sell.Week_Number+1
+
 	if (Max_Week+1>53):
-		Max_Week=0
-	
+		availableWeek=[]
+		for counter in range(1,54):
+			availableWeek.append(counter)
+		for sell in sells:
+			if(availableWeek.count(sell.Week_Number)>0):
+				availableWeek.remove(sell.Week_Number)
+		if(len(availableWeek)>0):
+			Max_Week=availableWeek.pop(0)
+		else:
+			Max_Week=1
+
 	newSell.Week_Number=Max_Week
 	newSell.Min_Price=10
 	newSell.Max_Price=50
