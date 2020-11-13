@@ -3,43 +3,38 @@
 {% block bodydata %}
 <div class="container">
 	<div class="row">
-
-		
 		<div class="col-lg-12">
 			<div class="form-group bg_blue">
+				<h2>Your remaining budget is {{budget}}<h1>
 				<h1><strong>Seller Schedule</strong><h1>
 				</div>
 				<div class="table">
 					<form id="form1">
 						<table class="table">
 							<tr>
-
 								<th>Week Number</th>
-                                <th>Week Start Day</th>
-								<th>Current Price</th>
-								<th>Remaining Hours</th>
-								<th>Bid Start Date</th>
+								<th>Week Start Day</th>
+								<th>Bidding Start Date</th>
 								<th>Bidding Execution Date</th>
+								<th>Current Price</th>
+								<th>Remaining availability</th>
+								<th>Last Modified</th>
 								<th>Bid Hours</th>
 							</tr>
-							{% for seller in sellers %}
+							{% for sell in sellsObjects %}
 							<tr id="tr_data">
-								<td hidden>{{ seller.id }}</td>
-								<td  data-id="{{ seller.id }}" data-type="seller.id" hidden>{{  seller.id }}</td>
-								<td  data-id="{{ seller.id }}" data-type="Week_Number">{{ seller.Week_Number }}</td>
-								<td  data-id="{{ seller.id }}" data-type="Week_Start_Date">{{ seller.Week_Start_Date }}</td>
-								<td  data-id="{{ seller.id }}" data-type="Price">{{ seller.Price }}</td>
-								<td  data-id="{{ seller.id }}" data-type="Remaining_Hours">{{ seller.Remaining_Hours }}</td>
-								<td  data-id="{{ seller.id }}" data-type="Start_Date">{{ seller.Start_Date }}</td>
-								<td  data-id="{{ seller.id }}" data-type="End_Date">{{ seller.End_Date }}</td>
-								{% if seller.Remaining_Hours != "0.00" %}
-								
-								<td class="editable" data-id="{{ seller.id }}" data-type="Bid_Hours"></td>
-								<td><input class="btn btn-success update-button" id="{{seller.id}}" value="Bid" type="button" />
+								<td data-id="{{ sell.id }}" data-type="sell.id" hidden>{{ sell.id }}</td>
+								<td data-id="{{ sell.id }}" data-type="Week_Number">{{ sell.Week_Number }}</td>
+								<td data-id="{{ sell.id }}" data-type="Week_Start_Date">{{ sell.Week_Start_Date }}</td>
+								<td data-id="{{ sell.id }}" data-type="Start_Date">{{ sell.Start_Date }}</td>
+								<td data-id="{{ sell.id }}" data-type="End_Date">{{ sell.End_Date }}</td>
+								<td data-id="{{ sell.id }}" data-type="Current_price">{{ sell.Current_price }}</td>
+								<td data-id="{{ sell.id }}" data-type="Remaining_availability">{{ sell.Remaining_Availibility }}</td>
+								<td data-id="{{ sell.id }}" data-type="Post_Date">{{ sell.Post_Date }}</td>
+								<td class="editable" data-id="{{ sell.id }}" data-type="Bid_Hours"></td>
+								<td><input class="btn btn-success update-button" id="{{sell.id}}" value="Bid" type="button" />
 								</td>
-							{% endif %}
 							</tr>
-							<!--<a href="/newBuyer" class="btn btn-success">-->
 							{% endfor %}
 						</table>
 					</form>
@@ -52,25 +47,23 @@
 				<h1><strong>My Bids</strong><h1>
 				</div>
 				<div class="table">
-					<form id="form1">
+					<form id="form2">
 						<table class="table">
 							<tr>
-
 								<th>Week Number</th>
 								<th>Week Start Day</th>
 								<th>Price</th>
 								<th>Hours</th>
 								<th>Bidding_Date</th>
 							</tr>
-							{% for buyer in buyers %}
+							{% for bid in bidsObjects %}
 							<tr id="tr_data">
-								<td class="editable" data-id="{{ buyer.id }}" data-type="buyer.id" hidden>{{ buyer.id }}</td>
-								<td class="editable" data-id="{{ buyer.id }}" data-type="Week_Number">{{ buyer.Week_Number }}</td>
-								<td class="editable" data-id="{{ buyer.id }}" data-type="Week_Start_Date">{{ buyer.Week_Start_Date }}</td>
-								<td class="editable" data-id="{{ buyer.id }}" data-type="Price">{{ buyer.Price }}</td>
-								<td class="editable" data-id="{{ buyer.id }}" data-type="Hours">{{ buyer.Hours }}</td>
-								<td class="editable" data-id="{{ buyer.id }}" data-type="Bidding_Date">{{ buyer.Bidding_Date }}</td>
-							
+								<td class="editable" data-id="{{ bid.id }}" data-type="bid.id" hidden>{{ bid.id }}</td>
+								<td data-id="{{ bid.id }}" data-type="Week_Number">{{ bid.Week_Number }}</td>
+								<td data-id="{{ bid.id }}" data-type="Week_Start_Date">{{ bid.Week_Start_Date }}</td>
+								<td data-id="{{ bid.id }}" data-type="Price">{{ bid.Price }}</td>
+								<td data-id="{{ bid.id }}" data-type="Hours">{{ bid.Hours }}</td>
+								<td data-id="{{ bid.id }}" data-type="Bidding_Date">{{ bid.Bidding_Date }}</td>
 							</tr>
 							{% endfor %}
 						</table>
@@ -107,7 +100,7 @@
 					if(data_type=="created_at"){
 						input_type="datetime-local";
 					}
-					var input="<input name='selected_buyer' type='"+input_type+"' class='input-data' value='"+value+"' class='form-control'>";
+					var input="<input name='selected_bid' type='"+input_type+"' class='input-data' value='"+value+"' class='form-control'>";
 					$(this).html(input);
 					$(this).removeClass("editable")
 				});
@@ -118,26 +111,26 @@
 					if(data_type=="created_at"){
 						input_type="datetime-local";
 					}
-					var input="<input name='selected_buyer' type='"+input_type+"' class='input-data' value='"+value+"' class='form-control'>";
+					var input="<input name='selected_bid' type='"+input_type+"' class='input-data' value='"+value+"' class='form-control'>";
 					$(this).html(input);
 					$(this).removeClass("editable")
 				});
 
 				$(document).on("click",".update-button",function(e){
 					let id = $(this)[0]["id"];
-					if (parseFloat($("#form1 td[data-id='" + id + "']")[7].innerText) > parseFloat($("#form1 td[data-id='" + id + "']")[4].innerText)) {
-						alert("No Remaining Hours for the clicked week");
-					} else if (isNaN(parseFloat($("#form1 td[data-id='" + id + "']")[7].innerText))) {
-						alert("Entered Bid Hours is invalid");
-					} else if (parseFloat($("#form1 td[data-id='" + id + "']")[7].innerText)<0.0) {
-						alert("Bid Hours can't be Negative");
-					}  else {
-						$("#form1 td[data-id='"+id+"']")[4].innerText = parseFloat($("#form1 td[data-id='"+id+"']")[4].innerText) - parseFloat($("#form1 td[data-id='"+id+"']")[7].innerText)
+					if (parseFloat($("#form1 td[data-id='" + id + "']")[8].innerText) >parseFloat($("#form1 td[data-id='" + id + "']")[6].innerText) ){
+						alert("No Remaining Hours for the clicked week");//Check to see if there is any available time
+					} else if (isNaN(parseFloat($("#form1 td[data-id='" + id + "']")[8].innerText))) {
+						alert("Entered Bid Hours is invalid");//Validation of the bid hour textbox
+					} else if (parseFloat($("#form1 td[data-id='" + id + "']")[8].innerText)<0.0) {
+						alert("Bid Hours can't be Negative");//Validation of the bid hour textbox
+					}
+					else {
+						//$("#form1 td[data-id='"+id+"']")[6].innerText = parseFloat($("#form1 td[data-id='"+id+"']")[6].innerText) - parseFloat($("#form1 td[data-id='"+id+"']")[8].innerText)//re-calculating the available time
 						sendToServer(id);
 					}
 					//var d = new Date($.now());
 					//$("#form1 td[data-id='" + id + "']")[6].innerText = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-					
 				});
 
 				$(document).on("blur",".input-data",function(){
@@ -157,7 +150,7 @@
 						td.addClass("editable");
 					}
 				});
-				function sendToServer(id){
+				function sendToServer(id){					
 					$.ajax({
 						url:window.location.href.replace("buyer","saveBuyer"),
 						type:"POST",
@@ -165,12 +158,12 @@
 					})
 					.done(function(response){
 						console.log(response);
-						//alert("Update succeeded")
+						alert("Update succeeded")
 						location.reload();
 					})
 					.fail(function(){
 						console.log("Error Occured");
-						//alert("Update failed")
+						alert("Update failed")
 					});
 				}
 
@@ -182,16 +175,11 @@
 						let row  = $(this)[0];
 						if (row.children !== undefined){
 							data.id = id;
-							data.Week_Number = row.children[2].textContent;
-							data.Week_Start_Date = row.children[3].textContent;
-							data.Price = row.children[4].textContent;
-							data.Remaining_Hours = row.children[5].textContent;
-							data.Bid_Start_Date = row.children[6].textContent;
-							data.Bid_Execution_Date = row.children[7].textContent;
+							data.Week_Number = row.children[1].textContent;
+							data.Price = row.children[5].textContent;
 							data.Bid_Hours = row.children[8].textContent;
 							var d = new Date($.now());
-							data.Bidding_Date =  d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-							
+							data.Bidding_Date =  d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();				
 						}
 					}
 				});

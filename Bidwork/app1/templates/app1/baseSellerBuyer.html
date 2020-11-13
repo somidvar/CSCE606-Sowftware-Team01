@@ -29,7 +29,6 @@
 						<a class="nav-item nav-link" name="home" href="{%url 'app1-home'%}">Home</a>
 						<a class="nav-item nav-link" name="aboutUs" href="{%url 'app1-aboutus'%}">About</a>
 					</div>
-					<!-- Navbar Right Side -->
 					<div class="navbar-nav">
 						{% if user.is_authenticated %}
 						<a class="nav-item nav-link" name="profile" href="{% url 'profile' %}">Profile</a>
