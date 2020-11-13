@@ -1,6 +1,7 @@
 {%extends "app1/baseSellerBuyer.html"%}
 
 {% block bodydata %}
+{% if user.is_authenticated and user.is_staff%}
 <div class="container">
 	<div class="row">
 		<div class="col-lg-12">
@@ -11,7 +12,7 @@
 					<form id="form1">
 						<table class="table">
 							<tr>
-                                <th>Week Number</th>
+								<th>Week Number</th>
 								<th>Week Start Day</th>
 								<th>Bidding Start Date</th>
 								<th>Bidding Execution Date</th>
@@ -46,7 +47,7 @@
 			</div>
 		</div>
 
-       <a href="/newSeller" class="btn btn-success">Add</a>
+		<a href="/newSeller" class="btn btn-success">Add</a>
 
 		<div class="col-lg-12">
 			<div class="form-group bg_blue">
@@ -56,8 +57,8 @@
 					<form id="form1">
 						<table class="table">
 							<tr>
-                                <th>Buyer name</th>
-								 <th>Bid Hour</th>
+								<th>Buyer name</th>
+								<th>Bid Hour</th>
 								<th>Price</th>
 								<th>Week Number</th>
 								<th>Bidding Date</th>
@@ -69,109 +70,118 @@
 								<td  data-id="{{ buyer.id }}" data-type="Price">{{ buyer.Price }}</td>
 								<td  data-id="{{ buyer.id }}" data-type="Week_Number">{{ buyer.Week_Number }}</td>
 								<td  data-id="{{ buyer.id }}" data-type="Bidding_Date">{{ buyer.Bidding_Date }}</td>
-								
-
-
-								</td>
-							</tr>
-							{% endfor %}
-						</table>
-					</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+				</form>
+			</div>
+		</div>
+	</div>
+{%else%}
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="form-group bg_blue">
+					<h1><strong>Access Denied!</strong><h1>
+						<h3>Your credential does not allow to change/view the bidding schedule<h1>
 				</div>
 			</div>
 		</div>
+	</div>
+{% endif %}	
 
-		{% endblock bodydata %}
+	{% endblock bodydata %}
 
-		{% block custom_js %}
-		<script>
-			$(document).ready(function(){
-				$(document).on("dblclick",".editable",function(){
-					var value=$(this).text();
-					var data_type=$(this).data("type");
-					var input_type="text";
-					if(data_type=="created_at"){
-						input_type="datetime-local";
-					}
-					if (data_type != "Week_Number") {
-						var input = "<input name='selected_seller' type='" + input_type + "' class='input-data' value='" + value + "' class='form-control'>";
-					} else {
-						var input = "<select name='Week_Number' id='Week_Number'>"
-						for (var i = 1; i < 54; i++)
-							input += "<option value='" + i + "'>" + i + "</option>";
-						input+="</select>"
-					}
-					
-					$(this).html(input);
-					$(this).removeClass("editable")
-				});
+	{% block custom_js %}
+	<script>
+		$(document).ready(function(){
+			$(document).on("dblclick",".editable",function(){
+				var value=$(this).text();
+				var data_type=$(this).data("type");
+				var input_type="text";
+				if(data_type=="created_at"){
+					input_type="datetime-local";
+				}
+				if (data_type != "Week_Number") {
+					var input = "<input name='selected_seller' type='" + input_type + "' class='input-data' value='" + value + "' class='form-control'>";
+				} else {
+					var input = "<select name='Week_Number' id='Week_Number'>"
+					for (var i = 1; i < 54; i++)
+						input += "<option value='" + i + "'>" + i + "</option>";
+					input+="</select>"
+				}
 
-				$(document).on("click",".update-button",function(e){
-					let id = $(this)[0]["id"];
-					sendToServer(id);
-				});
+				$(this).html(input);
+				$(this).removeClass("editable")
+			});
 
-				$(document).on("blur",".input-data",function(){
+			$(document).on("click",".update-button",function(e){
+				let id = $(this)[0]["id"];
+				sendToServer(id);
+			});
+
+			$(document).on("blur",".input-data",function(){
+				var value=$(this).val();
+				var td=$(this).parent("td");
+				$(this).remove();
+				td.html(value);
+				td.addClass("editable");
+			});
+
+			$(document).on("change","#Week_Number",function(e){
+				let id = $(this)[0];
+				var result = new Date("12/29/2019");
+				result.setDate(result.getDate() + parseInt(($("#Week_Number").val())-1) * 7);
+				$("#form1 td[data-id='" + $(this)[0].parentElement.getAttribute("data-id") + "']")[2].innerText = (result.getYear()+1900)+"-"+(result.getMonth() +1)+"-"+result.getDate()
+			});
+
+
+			$(document).on("keypress",".input-data",function(e){
+				var key=e.which;
+				if(key==13){
 					var value=$(this).val();
 					var td=$(this).parent("td");
 					$(this).remove();
 					td.html(value);
 					td.addClass("editable");
-				});
-
-				$(document).on("change","#Week_Number",function(e){
-					let id = $(this)[0];
-					var result = new Date("12/29/2019");
-					result.setDate(result.getDate() + parseInt(($("#Week_Number").val())-1) * 7);
-					$("#form1 td[data-id='" + $(this)[0].parentElement.getAttribute("data-id") + "']")[2].innerText = (result.getYear()+1900)+"-"+(result.getMonth() +1)+"-"+result.getDate()
-				});
-
-
-				$(document).on("keypress",".input-data",function(e){
-					var key=e.which;
-					if(key==13){
-						var value=$(this).val();
-						var td=$(this).parent("td");
-						$(this).remove();
-						td.html(value);
-						td.addClass("editable");
-					}
-				});
-				function sendToServer(id){
-					$.ajax({
-						url:window.location.href.replace("seller","saveSeller"),
-						type:"POST",
-						data:do_serialize(id),
-					})
-					.done(function(response){
-						console.log(response);
+				}
+			});
+			function sendToServer(id){
+				$.ajax({
+					url:window.location.href.replace("seller","saveSeller"),
+					type:"POST",
+					data:do_serialize(id),
+				})
+				.done(function(response){
+					console.log(response);
 						//alert("Update succeeded")
 						location.reload();
 					})
-					.fail(function(){
-						console.log("Error Occured");
+				.fail(function(){
+					console.log("Error Occured");
 						//alert("Update failed")
 					});
-				}
+			}
 
-			});
-			function do_serialize(id){
-				let data = {};
-				$('#form1').find('tr').each(function(){
-					if ($(this)[0].children[0].innerText === id){
-						let row  = $(this)[0];
-						if (row.children !== undefined){
-							data.id = id;
-							data.Week_Number =(row.children[1].children[0] == undefined? row.children[1].textContent:row.children[1].children[0].value);
-							data.Start_Date = row.children[3].textContent;
-							data.End_Date = row.children[4].textContent;
-							data.Min_Price = row.children[5].textContent;
-							data.Max_Price = row.children[6].textContent;
-							data.Total_Availibility = row.children[8].textContent;
-						}
+		});
+		function do_serialize(id){
+			let data = {};
+			$('#form1').find('tr').each(function(){
+				if ($(this)[0].children[0].innerText === id){
+					let row  = $(this)[0];
+					if (row.children !== undefined){
+						data.id = id;
+						data.Week_Number =(row.children[1].children[0] == undefined? row.children[1].textContent:row.children[1].children[0].value);
+						data.Start_Date = row.children[3].textContent;
+						data.End_Date = row.children[4].textContent;
+						data.Min_Price = row.children[5].textContent;
+						data.Max_Price = row.children[6].textContent;
+						data.Total_Availibility = row.children[8].textContent;
 					}
-				});
-				return data;
-			}          
-		</script>
-		{% endblock custom_js %}
+				}
+			});
+			return data;
+		}          
+	</script>
+	{% endblock custom_js %}

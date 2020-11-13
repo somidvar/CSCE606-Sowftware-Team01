@@ -42,6 +42,7 @@ def home(request):
 def aboutus(request):
 	return render(request,'app1/aboutus.html')
 
+@login_required
 def seller(request):
 	Buyer_Profile_Instantiating()
 
@@ -108,6 +109,7 @@ def newSeller(request):
 	messages.success(request, "Added Successfully")
 	return HttpResponseRedirect("/seller")
 
+@login_required
 def buyer(request):
 	Buyer_Profile_Instantiating()
 	sells = Items_B.objects.all()
