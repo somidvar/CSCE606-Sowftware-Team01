@@ -3,18 +3,14 @@ from django.http import HttpResponse
 from datetime import datetime
 from django.utils import timezone
 
-import os, sys
+import os, sys, json
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
-from MyTimeFunctions import *
-
-from sellers.models import Items, Biddings,Buyers
+from sellers.models import Items, Biddings
 from buyers.models import Items_B, Biddings_B
 from users.models import Profile
-
-import json
 
 from django.contrib import messages
 from django.core import serializers
@@ -33,7 +29,7 @@ from requests import request
 from decimal import *
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-
+from MyTimeFunctions import *
 
 
 def home(request):
@@ -42,13 +38,15 @@ def home(request):
 def aboutus(request):
 	return render(request,'app1/aboutus.html')
 
-#@login_required
+@login_required
 def seller(request):
 	Buyer_Profile_Instantiating()
 
 	sells = Items.objects.all()
+	sellsDetails=[]
 	if(sells.count()>0):
 		for sell in sells:
+			sellisEditable=1
 			Bid_ElapsedTime=MyCurrentTime()- sell.Start_Date
 			Bid_Horizon=sell.End_Date- sell.Start_Date
 			Bid_Horizon=int(Bid_Horizon.total_seconds()/3600)
@@ -76,13 +74,19 @@ def seller(request):
 				bid.Bidding_Date = bid.Bidding_Date.strftime("%Y-%m-%d %H:%M")
 			sell.Remaining_Availibility = remaining_time
 
+			if(bids.count()>0):
+				sellisEditable=0			
+
+			sellsDetails.append([str(sell.id),str(sell.Week_Number),str(sell.Week_Start_Date),str(sell.Start_Date),str(sell.End_Date),str(sell.Min_Price),str(sell.Max_Price),str(sell.Current_price),str(sell.Total_Availibility),str(sell.Remaining_Availibility),str(sell.Post_Date),str(sellisEditable)])
+
 	bids = Biddings.objects.all()
 	bidDetails =[]
 	for bid in bids:
 		UserTemp=User.objects.get(id=bid.Buyer_Id)
-		bidDetails.append([str(bid.Week_Number),str(bid.Hours),str(UserTemp.username),str(bid.Price),str(bid.Bidding_Date)])
+		bidDetails.append([str(bid.id),str(bid.Week_Number),str(UserTemp.username), str(bid.Price),str(bid.Hours),str(bid.Hours*bid.Price),str(bid.Bidding_Date)])
 
-	return render(request,'app1/seller.html',{'bidsObjects':bidDetails, 'sellsObjects' : sells})
+	UserTemp=User.objects.get(id=request.user.id)
+	return render(request,'app1/seller.html',{'bidsObjects':bidDetails, 'sellsObjects' : sellsDetails,'currentUser':UserTemp})
 
 def deleteSell(request,sellID):
 	sell=Items.objects.get(id=sellID)
@@ -111,18 +115,22 @@ def newSell(request):
 		Max_Week=0
 	
 	newSell.Week_Number=Max_Week
+	newSell.Min_Price=10
+	newSell.Max_Price=50
 	newSell.Total_Availibility=40
 	newSell.Remaining_Availibility=newSell.Total_Availibility
 	newSell.Start_Date=setWeekStartDay(newSell.Week_Number-2)
 	newSell.End_Date=setWeekStartDay(newSell.Week_Number-1)
+	newSell.Post_Date=MyCurrentTime()
 	newSell.save()
 	messages.success(request, "Added Successfully")
 	return HttpResponseRedirect("/seller")
 
-#@login_required
+@login_required
 def buyer(request):
 	Buyer_Profile_Instantiating()
 	sells = Items_B.objects.all()
+	sellsDetails=[]
 	
 	if(sells.count()>0):
 		for sell in sells:
@@ -144,10 +152,17 @@ def buyer(request):
 			for bid in bids:
 				bid.Bidding_Date = bid.Bidding_Date.strftime("%Y-%m-%d %H:%M")
 				sell.Remaining_Hours = sell.Total_Availibility-bid.Hours
+			
+			if(MyCurrentTime()<sell.End_Date):
+				sellisEnable=1
+			else:
+				sellisEnable=0
 
 			sell.Week_Start_Date = setWeekStartDay(sell.Week_Number).strftime("%Y-%m-%d")
 			sell.Start_Date = sell.Start_Date.strftime("%Y-%m-%d %H:%M")
 			sell.End_Date = sell.End_Date.strftime("%Y-%m-%d %H:%M")
+
+			sellsDetails.append([str(sell.id),str(sell.Week_Number),str(sell.Week_Start_Date),str(sell.Start_Date),str(sell.End_Date),str(sell.Current_price),str(sell.Remaining_Availibility),str(sell.Post_Date),str(sellisEnable)])
 
 	UserTemp=User.objects.get(id=request.user.id)
 	User_Profile= Profile.objects.get(user=UserTemp)
@@ -158,7 +173,11 @@ def buyer(request):
 		bid.Bidding_Date=bid.Bidding_Date.strftime("%Y-%m-%d %H:%M")
 		bid.Week_Start_Date = setWeekStartDay(bid.Week_Number).strftime("%Y-%m-%d")
 
-	return render(request,'app1/buyer.html',{'bidsObjects': bids,'sellsObjects':sells,'budget':Current_User_Budget})
+	bidDetails =[]
+	for bid in bids:
+		bidDetails.append([str(bid.id),str(bid.Week_Number), str(bid.Price),str(bid.Hours),str(bid.Hours*bid.Price),str(bid.Bidding_Date)])
+
+	return render(request,'app1/buyer.html',{'bidsObjects': bidDetails,'sellsObjects':sellsDetails,'budget':Current_User_Budget,'currentUser':UserTemp})
 
 def deleteBid(request,bidID):
 	bid=Biddings_B.objects.get(id=bidID)
@@ -169,7 +188,6 @@ def deleteBid(request,bidID):
 def newBid(request):
 	newBid=Biddings_B()
 	newBid.save()
-	#messages.error(request, "The budget is not enough")
 	return newBid.id
 
 def Buyer_Profile_Instantiating():

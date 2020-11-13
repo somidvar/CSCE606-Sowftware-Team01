@@ -1,7 +1,7 @@
 import datetime
 
 def MyCurrentTime():
-	TimeZone_Offset = -5
+	TimeZone_Offset = -6#Central standard time
 	Current_DateTime=datetime.datetime.now()+datetime.timedelta(hours = TimeZone_Offset)
 	return Current_DateTime
 
