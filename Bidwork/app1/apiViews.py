@@ -46,7 +46,6 @@ def saveSell(request):
 	try:
 		Start_Date=datetime.datetime.strptime(Start_Date_Str, "%Y-%m-%d %H:%M")
 	except Exception as e:
-		print(str(e))
 		messages.error(request, "The start date should be in Year-Month-Day Hour:Minute")
 		return JsonResponse({"error":"validation"})
 
@@ -54,8 +53,6 @@ def saveSell(request):
 	try:
 		End_Date=datetime.datetime.strptime(End_Date_Str, "%Y-%m-%d %H:%M")
 	except Exception as e:
-		print(str(e))
-
 		messages.error(request, "The end date should be in Year-Month-Day Hour:Minute")
 		return JsonResponse({"error":"validation"})
 
@@ -94,17 +91,33 @@ def saveBid(request):
 	bid.Week_Number=int(request.POST.get('Week_Number',''))
 	bid.Buyer_Id = request.user.id
 	bid.Price = Decimal(request.POST.get('Price', ''))
-	bid.Hours=int(request.POST.get('Bid_Hours',''))
 	bid.Item_Id = request.POST.get('id','')
+	try:
+		hoursTemp=Decimal(request.POST.get('Bid_Hours',''))
+	except Exception as e:
+		bid.delete()
+		messages.error(request, "The bid hours is not in correct format")
+		return JsonResponse({"error":"The bid hours is not in correct format"})
+
+	if(hoursTemp<0):
+		bid.delete()
+		messages.error(request, "The bid hours should be bigger than 0")
+		return JsonResponse({"error":"The bid hours should be bigger than 0"})		
+	if(int(hoursTemp)!=hoursTemp):
+		bid.delete()
+		messages.error(request, "The bid hours should be integer")
+		return JsonResponse({"error":"The bid hours should be integer"})		
+
+	bid.Hours=int(hoursTemp)
 	bid.save()
-	
 
 	UserTemp=User.objects.get(id=request.user.id)
 	User_Profile= Profile.objects.get(user=UserTemp)
 	Current_User_Budget=round(User_Profile.budget,2)
 
-	if(Current_User_Budget<bid.Price*bid.Hours):
+	if(Current_User_Budget<bid.Price*Decimal(bid.Hours)):
 		bid.delete()
+		messages.error(request, "Not enough budget")
 		return JsonResponse({"error":"Not enough budget"})	
 	else:
 		sells=Items_B.objects.filter(id=id)
@@ -116,6 +129,7 @@ def saveBid(request):
 		User_Profile.budget=Current_User_Budget-bid.Price*bid.Hours
 		User_Profile.save()
 		UserTemp.save()
+		messages.success(request, "The bid is placed successfully")
 		return JsonResponse({"success":"Updated"})	
 
 @csrf_exempt
