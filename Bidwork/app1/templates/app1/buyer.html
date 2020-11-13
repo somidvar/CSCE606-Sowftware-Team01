@@ -1,13 +1,13 @@
 {%extends "app1/baseSellerBuyer.html"%}
 
 {% block bodydata %}
-{% if user.is_authenticated and not user.is_staff%}
-<div class="container">
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="form-group bg_blue">
-				<h2>Your remaining budget is {{budget}}<h1>
-					<h1><strong>Seller Schedule</strong><h1>
+	
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group bg_blue">
+						<h2>Your remaining budget is {{budget}}<h1>
+						<h1><strong>Seller Schedule</strong><h1>
 					</div>
 					<div class="table">
 						<form id="form1">
@@ -23,29 +23,29 @@
 									<th>Bid Hours</th>
 								</tr>
 								{% for sell in sellsObjects %}
-								<tr id="tr_data">
-									<td data-id="{{ sell.id }}" data-type="sell.id" hidden>{{ sell.id }}</td>
-									<td data-id="{{ sell.id }}" data-type="Week_Number">{{ sell.Week_Number }}</td>
-									<td data-id="{{ sell.id }}" data-type="Week_Start_Date">{{ sell.Week_Start_Date }}</td>
-									<td data-id="{{ sell.id }}" data-type="Start_Date">{{ sell.Start_Date }}</td>
-									<td data-id="{{ sell.id }}" data-type="End_Date">{{ sell.End_Date }}</td>
-									<td data-id="{{ sell.id }}" data-type="Current_price">{{ sell.Current_price }}</td>
-									<td data-id="{{ sell.id }}" data-type="Remaining_availability">{{ sell.Remaining_Availibility }}</td>
-									<td data-id="{{ sell.id }}" data-type="Post_Date">{{ sell.Post_Date }}</td>
-									<td class="editable" data-id="{{ sell.id }}" data-type="Bid_Hours"></td>
-									<td><input class="btn btn-success update-button" id="{{sell.id}}" value="Bid" type="button" />
-									</td>
-								</tr>
+									<tr id="tr_data">
+										<td data-id="{{ sell.id }}" data-type="sell.id" hidden>{{ sell.id }}</td>
+										<td data-id="{{ sell.id }}" data-type="Week_Number">{{ sell.Week_Number }}</td>
+										<td data-id="{{ sell.id }}" data-type="Week_Start_Date">{{ sell.Week_Start_Date }}</td>
+										<td data-id="{{ sell.id }}" data-type="Start_Date">{{ sell.Start_Date }}</td>
+										<td data-id="{{ sell.id }}" data-type="End_Date">{{ sell.End_Date }}</td>
+										<td data-id="{{ sell.id }}" data-type="Current_price">{{ sell.Current_price }}</td>
+										<td data-id="{{ sell.id }}" data-type="Remaining_availability">{{ sell.Remaining_Availibility }}</td>
+										<td data-id="{{ sell.id }}" data-type="Post_Date">{{ sell.Post_Date }}</td>
+										<td class="editable" data-id="{{ sell.id }}" data-type="Bid_Hours"></td>
+										<td><input class="btn btn-success update-button" id="{{sell.id}}" value="Bid" type="button" />
+										</td>
+									</tr>
 								{% endfor %}
 							</table>
 						</form>
 					</div>
 				</div>
 			</div>
-
-			<div class="col-lg-12">
-				<div class="form-group bg_blue">
-					<h1><strong>My Bids</strong><h1>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group bg_blue">
+						<h1><strong>My Bids</strong><h1>
 					</div>
 					<div class="table">
 						<form id="form2">
@@ -58,49 +58,23 @@
 									<th>Bidding_Date</th>
 								</tr>
 								{% for bid in bidsObjects %}
-								<tr id="tr_data">
-									<td class="editable" data-id="{{ bid.id }}" data-type="bid.id" hidden>{{ bid.id }}</td>
-									<td data-id="{{ bid.id }}" data-type="Week_Number">{{ bid.Week_Number }}</td>
-									<td data-id="{{ bid.id }}" data-type="Week_Start_Date">{{ bid.Week_Start_Date }}</td>
-									<td data-id="{{ bid.id }}" data-type="Price">{{ bid.Price }}</td>
-									<td data-id="{{ bid.id }}" data-type="Hours">{{ bid.Hours }}</td>
-									<td data-id="{{ bid.id }}" data-type="Bidding_Date">{{ bid.Bidding_Date }}</td>
-								</tr>
+									<tr id="tr_data">
+										<td class="editable" data-id="{{ bid.id }}" data-type="bid.id" hidden>{{ bid.id }}</td>
+										<td data-id="{{ bid.id }}" data-type="Week_Number">{{ bid.Week_Number }}</td>
+										<td data-id="{{ bid.id }}" data-type="Week_Start_Date">{{ bid.Week_Start_Date }}</td>
+										<td data-id="{{ bid.id }}" data-type="Price">{{ bid.Price }}</td>
+										<td data-id="{{ bid.id }}" data-type="Hours">{{ bid.Hours }}</td>
+										<td data-id="{{ bid.id }}" data-type="Bidding_Date">{{ bid.Bidding_Date }}</td>
+									</tr>
 								{% endfor %}
 							</table>
 						</form>
 					</div>
 				</div>
 			</div>
-
-			<!-- <a href="/newBuyer" class="btn btn-success">Add</a> -->
-<!-- 		<div class="row">
-			<div class="col-lg-12">
-				<div class="form-group">
-					{% if messages %}
-						{% for message in messages %}
-							{% if message.tags == 'success' %}
-								<div class="alert alert-success">{{ message }}</div>
-							{% elif message.tags == 'error' %}
-								<div class="alert alert-danger">{{ message }}</div>
-							{% endif %}
-						{% endfor %}
-					{% endif %}
-				</div>
-			</div>
-		</div> -->
-{%else%}
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="form-group bg_blue">
-					<h1><strong>Access Denied!</strong><h1>
-						<h3>Your credential does not allow submit/view any bid<h1>
-				</div>
-			</div>
 		</div>
-	</div>
-{% endif %}			
+
+
 {% endblock bodydata %}
 
 {% block custom_js %}
@@ -165,7 +139,7 @@
 		});
 		function sendToServer(id){					
 			$.ajax({
-				url:window.location.href.replace("buyer","saveBuyer"),
+				url:window.location.href.replace("buyer","saveBid"),
 				type:"POST",
 				data:do_serialize(id),
 			})

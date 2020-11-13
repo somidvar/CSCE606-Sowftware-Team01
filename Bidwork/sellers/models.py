@@ -6,11 +6,11 @@ from django.contrib.postgres.fields import DateRangeField
 from MyTimeFunctions import *
 
 class Items(models.Model): 
-    Week_Number = models.DecimalField(max_digits=2, decimal_places=0,default=Decimal('0'), validators=[MinValueValidator(0)])
-    Min_Price = models.DecimalField(max_digits=5, decimal_places=2,default=Decimal('0.00'), validators=[MinValueValidator(0.01)])
-    Max_Price = models.DecimalField(max_digits=5, decimal_places=2,default=Decimal('0.00'), validators=[MinValueValidator(0.01)])
-    Total_Availibility = models.DecimalField(max_digits=5, decimal_places=0,default=Decimal('0'), validators=[MinValueValidator(1)])
-    Remaining_Availibility = models.DecimalField(max_digits=5, decimal_places=0,default=Decimal('0'), validators=[MinValueValidator(0)])
+    Week_Number = models.IntegerField(default=1, validators=[MinValueValidator(1)])
+    Min_Price = models.DecimalField(max_digits=10, decimal_places=2,default=Decimal('0.00'), validators=[MinValueValidator(0.01)])
+    Max_Price = models.DecimalField(max_digits=10, decimal_places=2,default=Decimal('0.00'), validators=[MinValueValidator(0.01)])
+    Total_Availibility = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+    Remaining_Availibility = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     Start_Date = models.DateTimeField(default= MyCurrentTime())
     End_Date = models.DateTimeField(default= MyCurrentTime())    
     Post_Date = models.DateTimeField(default= MyCurrentTime())

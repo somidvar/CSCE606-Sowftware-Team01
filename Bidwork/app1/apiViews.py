@@ -11,7 +11,7 @@ from decimal import *
 import datetime
 
 @csrf_exempt
-def saveSeller(request):
+def saveSell(request):
 	id=request.POST.get('id','')
 	currentSeller=Items.objects.get(id=id)
 	sellers=Items.objects.all()
@@ -84,9 +84,9 @@ def saveSeller(request):
 	return JsonResponse({"success":"Updated"})
 
 @csrf_exempt
-def saveBuyer(request):
+def saveBid(request):
 	id=request.POST.get('id','')
-	new_id = views.newBuyer(request)
+	new_id = views.newBid(request)
 	bid=Biddings_B.objects.get(id=new_id)
 	bid.Bidding_Date=request.POST.get('Bidding_Date','')#datetime.strptime
 	bid.Week_Number=int(request.POST.get('Week_Number',''))

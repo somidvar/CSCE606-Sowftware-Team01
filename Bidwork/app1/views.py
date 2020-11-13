@@ -42,74 +42,75 @@ def home(request):
 def aboutus(request):
 	return render(request,'app1/aboutus.html')
 
-@login_required
+#@login_required
 def seller(request):
 	Buyer_Profile_Instantiating()
 
-	sellersObjects = Items.objects.all()
-	BidsObjects = Biddings.objects.all()
-	if(sellersObjects.count()>0):
-		for seller in sellersObjects:
-			Bid_ElapsedTime=MyCurrentTime()- seller.Start_Date
-			Bid_Horizon=seller.End_Date- seller.Start_Date
+	sells = Items.objects.all()
+	if(sells.count()>0):
+		for sell in sells:
+			Bid_ElapsedTime=MyCurrentTime()- sell.Start_Date
+			Bid_Horizon=sell.End_Date- sell.Start_Date
 			Bid_Horizon=int(Bid_Horizon.total_seconds()/3600)
 			Bid_ElapsedTime=int(Bid_ElapsedTime.total_seconds()/3600)
-
-			if(Bid_ElapsedTime<=0):
-				seller.Current_price=seller.Max_Price
+			if(sell.End_Date<MyCurrentTime()):
+				sell.Current_price=sell.Min_Price
 			else:
-				Current_Price_Slope =(float(seller.Max_Price)- float(seller.Min_Price))*float(Bid_ElapsedTime/Bid_Horizon)
-				seller.Current_price=round(float(seller.Max_Price)-Current_Price_Slope,2)
+				if(Bid_ElapsedTime<=0):
+					sell.Current_price=sell.Max_Price
+				else:
+					Current_Price_Slope =(float(sell.Max_Price)- float(sell.Min_Price))*float(Bid_ElapsedTime/Bid_Horizon)
+					sell.Current_price=round(float(sell.Max_Price)-Current_Price_Slope,2)
 
-			seller.Week_Start_Date = setWeekStartDay(seller.Week_Number).strftime("%Y-%m-%d")
-			seller.Start_Date = seller.Start_Date.strftime("%Y-%m-%d %H:%M")
-			seller.End_Date = seller.End_Date.strftime("%Y-%m-%d %H:%M")
+			sell.Week_Start_Date = setWeekStartDay(sell.Week_Number).strftime("%Y-%m-%d")
+			sell.Start_Date = sell.Start_Date.strftime("%Y-%m-%d %H:%M")
+			sell.End_Date = sell.End_Date.strftime("%Y-%m-%d %H:%M")
 
-			Bids = Biddings.objects.filter(Item_Id=seller.id)
-			if Bids.count() == 0:
-				seller.Remaining_Hours = seller.Total_Availibility
-			remaining_time = seller.Total_Availibility
-			for Bid in Bids:
-				remaining_time = remaining_time - Bid.Hours
-				Bid.Bidding_Date = Bid.Bidding_Date.strftime("%Y-%m-%d %H:%M")
-			seller.Remaining_Availibility = remaining_time
+			bids = Biddings.objects.filter(Item_Id=sell.id)
+			if bids.count() == 0:
+				sell.Remaining_Hours = sell.Total_Availibility
+			remaining_time = sell.Total_Availibility
+			for bid in bids:
+				remaining_time = remaining_time - bid.Hours
+				bid.Bidding_Date = bid.Bidding_Date.strftime("%Y-%m-%d %H:%M")
+			sell.Remaining_Availibility = remaining_time
+	bids = Biddings.objects.all()
+	return render(request,'app1/seller.html',{'bidsObjects':bids, 'sellsObjects' : sells})
 
-	return render(request,'app1/seller.html',{'bids':BidsObjects, 'sellers' : sellersObjects})
-
-def deleteSeller(request,sellerID):
-	seller=Items.objects.get(id=sellerID)
-	Bids = Biddings.objects.filter(Item_Id=seller.id)
-	for Bid in Bids:
-		UserTemp=User.objects.get(id=Bid.Buyer_Id)
+def deleteSell(request,sellID):
+	sell=Items.objects.get(id=sellID)
+	bids = Biddings.objects.filter(Item_Id=sell.id)
+	for bid in bids:
+		UserTemp=User.objects.get(id=bid.Buyer_Id)
 		User_Profile= Profile.objects.get(user=UserTemp)
-		User_Profile.budget=User_Profile.budget+Bid.Price*Bid.Hours
+		User_Profile.budget=User_Profile.budget+bid.Price*bid.Hours
 
-	Bids.delete()
-	seller.delete()
+	bids.delete()
+	sell.delete()
 	messages.error(request, "Deleted Successfully")
 	return HttpResponseRedirect("/seller")
 
-def newSeller(request):
-	newSeller=Items()
-	sellers = Items.objects.all()
+def newSell(request):
+	newSell=Items()
+	sells = Items.objects.all()
 	Max_Week=1
-	if(sellers.count()>0):
-		for seller in sellers:
-			if(seller.Week_Number>=Max_Week):
-				Max_Week=seller.Week_Number+1
+	if(sells.count()>0):
+		for sell in sells:
+			if(sell.Week_Number>=Max_Week):
+				Max_Week=sell.Week_Number+1
 	if (Max_Week+1>53):
 		Max_Week=0
 	
-	newSeller.Week_Number=Max_Week
-	newSeller.Total_Availibility=40
-	newSeller.Remaining_Availibility=newSeller.Total_Availibility
-	newSeller.Start_Date=setWeekStartDay(newSeller.Week_Number-2)
-	newSeller.End_Date=setWeekStartDay(newSeller.Week_Number-1)
-	newSeller.save()
+	newSell.Week_Number=Max_Week
+	newSell.Total_Availibility=40
+	newSell.Remaining_Availibility=newSell.Total_Availibility
+	newSell.Start_Date=setWeekStartDay(newSell.Week_Number-2)
+	newSell.End_Date=setWeekStartDay(newSell.Week_Number-1)
+	newSell.save()
 	messages.success(request, "Added Successfully")
 	return HttpResponseRedirect("/seller")
 
-@login_required
+#@login_required
 def buyer(request):
 	Buyer_Profile_Instantiating()
 	sells = Items_B.objects.all()
@@ -120,12 +121,14 @@ def buyer(request):
 			Bid_Horizon=sell.End_Date- sell.Start_Date
 			Bid_Horizon=int(Bid_Horizon.total_seconds()/3600)
 			Bid_ElapsedTime=int(Bid_ElapsedTime.total_seconds()/3600)
-
-			if(Bid_ElapsedTime<=0):
-				sell.Current_price=sell.Max_Price
+			if(sell.End_Date<MyCurrentTime()):
+				sell.Current_price=sell.Min_Price
 			else:
-				Current_Price_Slope =(float(sell.Max_Price)- float(sell.Min_Price))*float(Bid_ElapsedTime/Bid_Horizon)
-				sell.Current_price=round(float(sell.Max_Price)-Current_Price_Slope,2)
+				if(Bid_ElapsedTime<=0):
+					sell.Current_price=sell.Max_Price
+				else:
+					Current_Price_Slope =(float(sell.Max_Price)- float(sell.Min_Price))*float(Bid_ElapsedTime/Bid_Horizon)
+					sell.Current_price=round(float(sell.Max_Price)-Current_Price_Slope,2)
 
 			bids = Biddings_B.objects.filter(Item_Id=sell.id)
 			sell.Remaining_Hours = sell.Total_Availibility
@@ -148,18 +151,18 @@ def buyer(request):
 
 	return render(request,'app1/buyer.html',{'bidsObjects': bids,'sellsObjects':sells,'budget':Current_User_Budget})
 
-def deleteBuyer(request,buyerID):
-	buyer=Biddings_B.objects.get(id=buyerID)
-	#buyer.delete()
+def deleteBid(request,bidID):
+	bid=Biddings_B.objects.get(id=bidID)
+	bid.delete()
 	messages.error(request, "Deleted Successfully")
 	return HttpResponseRedirect("/buyer")
 
-def newBuyer(request):
-	newbuyer=Biddings_B()
-	newbuyer.save()
+def newBid(request):
+	newBid=Biddings_B()
+	newBid.save()
 	messages.success(request, "Added Successfully")
 	HttpResponseRedirect("/buyer")	
-	return newbuyer.id
+	return newBid.id
 
 def Buyer_Profile_Instantiating():
 	Users=User.objects.all()
