@@ -42,7 +42,7 @@ def aboutus(request):
 def seller(request):
 	Buyer_Profile_Instantiating()
 
-	sells = Items.objects.all()
+	sells = Items.objects.order_by('Week_Number')
 	sellsDetails=[]
 	if(sells.count()>0):
 		for sell in sells:
@@ -79,7 +79,7 @@ def seller(request):
 
 			sellsDetails.append([str(sell.id),str(sell.Week_Number),str(sell.Week_Start_Date),str(sell.Start_Date),str(sell.End_Date),str(sell.Min_Price),str(sell.Max_Price),str(sell.Current_price),str(sell.Total_Availibility),str(sell.Remaining_Availibility),str(sell.Post_Date),str(sellisEditable)])
 
-	bids = Biddings.objects.all()
+	bids = Biddings.objects.order_by('Week_Number')
 	bidDetails =[]
 	for bid in bids:
 		UserTemp=User.objects.get(id=bid.Buyer_Id)
@@ -140,9 +140,9 @@ def newSell(request):
 @login_required
 def buyer(request):
 	Buyer_Profile_Instantiating()
-	sells = Items_B.objects.all()
+
+	sells = Items_B.objects.order_by('Week_Number')
 	sellsDetails=[]
-	
 	if(sells.count()>0):
 		for sell in sells:
 			Bid_ElapsedTime=MyCurrentTime()- sell.Start_Date
@@ -179,8 +179,8 @@ def buyer(request):
 	UserTemp=User.objects.get(id=request.user.id)
 	User_Profile= Profile.objects.get(user=UserTemp)
 	Current_User_Budget=round(User_Profile.budget,2)
-	bids = Biddings_B.objects.filter(Buyer_Id=request.user.id)
 
+	bids = Biddings_B.objects.filter(Buyer_Id=request.user.id).order_by('Week_Number')
 	for bid in bids:
 		bid.Bidding_Date=bid.Bidding_Date.strftime("%Y-%m-%d %H:%M")
 		bid.Week_Start_Date = setWeekStartDay(bid.Week_Number).strftime("%Y-%m-%d")
