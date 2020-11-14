@@ -63,6 +63,7 @@ def seller(request):
 			sell.Week_Start_Date = setWeekStartDay(sell.Week_Number).strftime("%Y-%m-%d")
 			sell.Start_Date = sell.Start_Date.strftime("%Y-%m-%d %H:%M")
 			sell.End_Date = sell.End_Date.strftime("%Y-%m-%d %H:%M")
+			sell.Post_Date=sell.Post_Date.strftime("%Y-%m-%d %H:%M")
 
 			bids = Biddings.objects.filter(Item_Id=sell.id)
 			if bids.count() == 0:
@@ -71,7 +72,6 @@ def seller(request):
 
 			for bid in bids:
 				remaining_time = remaining_time - bid.Hours
-				bid.Bidding_Date = bid.Bidding_Date.strftime("%Y-%m-%d %H:%M")
 			sell.Remaining_Availibility = remaining_time
 
 			if(bids.count()>0):
@@ -83,6 +83,7 @@ def seller(request):
 	bidDetails =[]
 	for bid in bids:
 		UserTemp=User.objects.get(id=bid.Buyer_Id)
+		bid.Bidding_Date = bid.Bidding_Date.strftime("%Y-%m-%d %H:%M")
 		bidDetails.append([str(bid.id),str(bid.Week_Number),str(UserTemp.username), str(bid.Price),str(bid.Hours),str(bid.Hours*bid.Price),str(bid.Bidding_Date)])
 
 	UserTemp=User.objects.get(id=request.user.id)
@@ -171,6 +172,7 @@ def buyer(request):
 			sell.Week_Start_Date = setWeekStartDay(sell.Week_Number).strftime("%Y-%m-%d")
 			sell.Start_Date = sell.Start_Date.strftime("%Y-%m-%d %H:%M")
 			sell.End_Date = sell.End_Date.strftime("%Y-%m-%d %H:%M")
+			sell.Post_Date=sell.Post_Date.strftime("%Y-%m-%d %H:%M")
 
 			sellsDetails.append([str(sell.id),str(sell.Week_Number),str(sell.Week_Start_Date),str(sell.Start_Date),str(sell.End_Date),str(sell.Current_price),str(sell.Remaining_Availibility),str(sell.Post_Date),str(sellisEnable)])
 
@@ -182,6 +184,7 @@ def buyer(request):
 	for bid in bids:
 		bid.Bidding_Date=bid.Bidding_Date.strftime("%Y-%m-%d %H:%M")
 		bid.Week_Start_Date = setWeekStartDay(bid.Week_Number).strftime("%Y-%m-%d")
+
 
 	bidDetails =[]
 	for bid in bids:
