@@ -200,6 +200,7 @@ def deleteBid(request,bidID):
 
 def newBid(request):
 	newBid=Biddings_B()
+	newBid.Hours=0
 	newBid.save()
 	return newBid.id
 

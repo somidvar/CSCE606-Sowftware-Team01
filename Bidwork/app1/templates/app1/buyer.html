@@ -32,10 +32,12 @@
 										<td data-id="{{ sell.0 }}" data-type="Current_price">{{ sell.5 }}</td>
 										<td data-id="{{ sell.0 }}" data-type="Remaining_availability">{{ sell.6 }}</td>
 										<td data-id="{{ sell.0 }}" data-type="Post_Date">{{ sell.7}}</td>
-										<td class="editable" data-id="{{ sell.0 }}" data-type="Bid_Hours"></td>
+										
 										{% if sell.8 == "1"%}
+											<td class="editable" style="color:#00688B" data-id="{{ sell.0 }}" data-type="Bid_Hours"> <u>0 </u></td>
 											<td><input class="btn btn-success update-button" id="{{sell.0}}" value="Bid" type="button" /></td>
 										{%else%}
+											<td class="editable" data-id="{{ sell.0 }}" data-type="Bid_Hours"> 0</td>		
 											<td><input class="btn btn-success update-button" id="{{sell.0}}" value="Bid" type="button" disabled/></td>										
 										{% endif %}
 									</tr>
