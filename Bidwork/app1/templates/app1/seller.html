@@ -27,22 +27,21 @@
 								{% for sell in sellsObjects %}
 								<tr id="tr_data">
 									<td data-id="{{ sell.0 }}" data-type="sell.0" hidden>{{ sell.0 }}</td>
-									<td class="editable" data-id="{{ sell.0 }}" data-type="Week_Number">{{ sell.1 }}</td>
-									<td data-id="{{ sell.0 }}" data-type="Week_Start_Date">{{ sell.2 }}</td>
-									<td class="editable" data-id="{{ sell.0 }}" data-type="Start_Date">{{ sell.3 }}</td>
-									<td class="editable" data-id="{{ sell.0 }}" data-type="End_Date">{{ sell.4 }}</td>
-									<td class="editable" data-id="{{ sell.0 }}" data-type="Min_Price">{{ sell.5 }}</td>
-									<td class="editable" data-id="{{ sell.0 }}" data-type="Max_Price">{{ sell.6 }}</td>
-									<td data-id="{{ sell.0 }}" data-type="Current_price">{{ sell.7 }}</td>
-									<td class="editable" data-id="{{ sell.0 }}" data-type="Total_Availibility">{{ sell.8 }}</td>
-									<td data-id="{{ sell.0 }}" data-type="Remaining_availability">{{ sell.9 }}</td>
-									<td data-id="{{ sell.0 }}" data-type="Post_Date">{{ sell.10 }}</td>
+									<td style="{{sell.12}}" class="{{sell.13}}" data-id="{{ sell.0 }}" data-type="Week_Number">{{ sell.1 }}</td>
+									<td style="{{sell.14}}" data-id="{{ sell.0 }}" data-type="Week_Start_Date">{{ sell.2 }}</td>
+									<td style="{{sell.12}}" class="{{sell.13}}" data-id="{{ sell.0 }}" data-type="Start_Date">{{ sell.3 }}</td>
+									<td style="{{sell.12}}" class="{{sell.13}}" data-id="{{ sell.0 }}" data-type="End_Date">{{ sell.4 }}</td>
+									<td style="{{sell.12}}" class="{{sell.13}}" data-id="{{ sell.0 }}" data-type="Min_Price">{{ sell.5 }}</td>
+									<td style="{{sell.12}}" class="{{sell.13}}" data-id="{{ sell.0 }}" data-type="Max_Price">{{ sell.6 }}</td>
+									<td style="{{sell.14}}" data-id="{{ sell.0 }}" data-type="Current_price">{{ sell.7 }}</td>
+									<td style="{{sell.12}}" class="editable" data-id="{{ sell.0 }}" data-type="Total_Availibility">{{ sell.8 }}</td>
+									<td style="{{sell.14}}" data-id="{{ sell.0 }}" data-type="Remaining_availability">{{ sell.9 }}</td>
+									<td style="{{sell.14}}" data-id="{{ sell.0 }}" data-type="Post_Date">{{ sell.10 }}</td>
+									<td>
 									{% if sell.11 == "1" %}
-										<td><a href="/deleteSell/{{sell.0}}" class="btn btn-danger">Delete</a><br>
-									{%else%}
-										<td><input href="/deleteSell/{{sell.0}}" class="btn btn-danger delete-button" id='{{sell.0}}' value="Delete" type="button" disabled >
+										<a href="/deleteSell/{{sell.0}}" class="btn btn-danger">Delete</a><br>
 									{%endif%}
-									<input class="btn btn-success update-button" id='{{sell.0}}' value="Save" type="button"/>
+									<input class="btn btn-success update-button" id='{{sell.0}}' value="Update" type="button"/>
 									</td>
 								</tr>
 								{% endfor %}
@@ -70,13 +69,13 @@
 									</tr>
 									{% for bid in bidsObjects %}
 										<tr id="tr_data">
-											<td  data-id="{{ bid.0 }}" data-type="id" hidden>{{ bid.0 }}</td>
-											<td  data-id="{{ bid.0 }}" data-type="Week_Number">{{ bid.1 }}</td>
-											<td  data-id="{{ bid.0 }}" data-type="Buyer_Username">{{ bid.2 }}</td>
-											<td  data-id="{{ bid.0 }}" data-type="Price">{{ bid.3 }}</td>
-											<td  data-id="{{ bid.0 }}" data-type="Hours">{{ bid.4 }}</td>
-											<td  data-id="{{ bid.0 }}" data-type="Total">{{ bid.5 }}</td>
-											<td  data-id="{{ bid.0 }}" data-type="Bidding_Date">{{ bid.6 }}</td>
+											<td  style="{{bid.7}}" data-id="{{ bid.0 }}" data-type="id" hidden>{{ bid.0 }}</td>
+											<td  style="{{bid.7}}" data-id="{{ bid.0 }}" data-type="Week_Number">{{ bid.1 }}</td>
+											<td  style="{{bid.7}}" data-id="{{ bid.0 }}" data-type="Buyer_Username">{{ bid.2 }}</td>
+											<td  style="{{bid.7}}" data-id="{{ bid.0 }}" data-type="Price">{{ bid.3 }}</td>
+											<td  style="{{bid.7}}" data-id="{{ bid.0 }}" data-type="Hours">{{ bid.4 }}</td>
+											<td  style="{{bid.7}}" data-id="{{ bid.0 }}" data-type="Total">{{ bid.5 }}</td>
+											<td  style="{{bid.7}}" data-id="{{ bid.0 }}" data-type="Bidding_Date">{{ bid.6 }}</td>
 										</tr>
 									{% endfor %}									
 								</table>
