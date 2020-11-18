@@ -35,7 +35,7 @@ def saveSell(request):
 		messages.error(request, "Prices cannot be negative")
 		return JsonResponse({"error":"validation"})
 	if(Max_Price<Min_Price):
-		messages.error(request, "Min price should be bigger than max")
+		messages.error(request, "Min price should be smaller than max")
 		return JsonResponse({"error":"validation"})
 	#Checking to make sure that the update does not go under what it is already bidded
 	bids=Biddings.objects.filter(Item_Id=currentSell.id)
@@ -100,6 +100,7 @@ def saveBid(request):
 	bid.Buyer_Id = request.user.id
 	bid.Price = Decimal(request.POST.get('Price', ''))
 	bid.Item_Id = request.POST.get('id','')
+
 	try:
 		hoursTemp=Decimal(request.POST.get('Bid_Hours',''))
 	except Exception as e:
@@ -114,9 +115,16 @@ def saveBid(request):
 	if(int(hoursTemp)!=hoursTemp):
 		bid.delete()
 		messages.error(request, "The bid hours should be integer")
-		return JsonResponse({"error":"The bid hours should be integer"})		
+		return JsonResponse({"error":"The bid hours should be integer"})
+
 
 	bid.Hours=int(hoursTemp)
+	sell = Items_B.objects.get(id=id)
+	if(bid.Hours>sell.Remaining_Availibility):
+		bid.delete()
+		messages.error(request, "The bid hours is higher than availability")
+		return JsonResponse({"error":"The bid hours is higher than availability"})
+
 	bid.save()
 
 	UserTemp=User.objects.get(id=request.user.id)
@@ -128,9 +136,9 @@ def saveBid(request):
 		messages.error(request, "Not enough budget")
 		return JsonResponse({"error":"Not enough budget"})	
 	else:
-		sells=Items_B.objects.filter(id=id)
-		for sell in sells:
-			sell.Remaining_Availibility=sell.Remaining_Availibility-bid.Hours
+		sell=Items_B.objects.get(id=id)
+		sell.Remaining_Availibility=sell.Remaining_Availibility-bid.Hours
+
 		sell.save()
 
 		User_Profile.spent=User_Profile.budget+bid.Price*bid.Hours
