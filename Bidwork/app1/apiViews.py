@@ -87,7 +87,7 @@ def saveSell(request):
 	for bid in bids:
 		currentSell.Remaining_Availibility=currentSell.Total_Availibility-bid.Hours
 	currentSell.save()
-	messages.success(request, "The week details is updated successfully")
+	messages.success(request, "Updated")
 	return JsonResponse({"success":"Updated"})
 
 @csrf_exempt
@@ -107,7 +107,7 @@ def saveBid(request):
 		messages.error(request, "The bid hours is not in correct format")
 		return JsonResponse({"error":"The bid hours is not in correct format"})
 
-	if(hoursTemp<=0):
+	if(hoursTemp<0):
 		bid.delete()
 		messages.error(request, "The bid hours should be bigger than 0")
 		return JsonResponse({"error":"The bid hours should be bigger than 0"})		
