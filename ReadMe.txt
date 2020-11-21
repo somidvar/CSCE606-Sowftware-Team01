@@ -12,3 +12,6 @@ from app1.models import Post
 from sellers.models import Seller
 from users.models import Profile
 from django.contrib.auth.models import User
+
+Testing
+Change the managed variable of Items and Bidding table in sellers/migrations/000_initial.py
