@@ -14,4 +14,4 @@ from users.models import Profile
 from django.contrib.auth.models import User
 
 Testing
-Change the managed variable of Items and Bidding table in sellers/migrations/000_initial.py
+Set managed=True for Items and Biddings Model in sellers/migrations/000_initial.py
