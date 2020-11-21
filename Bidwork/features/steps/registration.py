@@ -1,4 +1,5 @@
 from behave import given, when, then
+from django.contrib.auth.models import User
 from test.factories.user import UserFactory
 
 @given('an unregistered user on Registration page')
@@ -34,9 +35,6 @@ def step_impl(context):
 
 @given('a registered user on Registration page')
 def step_impl(context):
-    user = UserFactory(username='username', email='username@email.com')
-    user.set_password('userPassword')
-    user.save()
     context.username = "username"
     context.email = "username@email.com"
     context.password = "userPassword"

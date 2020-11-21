@@ -1,12 +1,14 @@
 from behave import given, when, then
+from django.contrib.auth.models import User
 from test.factories.user import UserFactory
 
 @given('an user with administrative rights')
 def step_impl(context):
     # Create user with admin rights for testing
-    admin = UserFactory(username='admin', email='admin@email.com', is_superuser=True, is_staff=True)
-    admin.set_password('adminPassword')
-    admin.save()
+    admin = User.objects.create_user(username='admin', email='admin@email.com', password='adminPassword',
+                                     is_superuser=True, is_staff=True)
+    a = UserFactory(user=admin)
+    a.save()
     context.username = "admin"
     context.password = "adminPassword"
 
@@ -31,9 +33,10 @@ def step_impl(context):
 @given('an user without administrative rights')
 def step_impl(context):
     # Create user without admin rights for testing
-    user = UserFactory(username='username', email='username@email.com')
-    user.set_password('userPassword')
-    user.save()
+    user = User.objects.create_user(username='username', email='username@email.com', password='userPassword',
+                                    is_superuser=False, is_staff=False)
+    u = UserFactory(user=user)
+    u.save()
     context.username = "username"
     context.password = "userPassword"
 
