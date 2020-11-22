@@ -1,13 +1,13 @@
 from behave import given, when, then
 from django.contrib.auth.models import User
-from test.factories.user import UserFactory
+from test.factories.user import ProfileFactory
 
 @given('an user with administrative rights')
 def step_impl(context):
     # Create user with admin rights for testing
     admin = User.objects.create_user(username='admin', email='admin@email.com', password='adminPassword',
                                      is_superuser=True, is_staff=True)
-    a = UserFactory(user=admin)
+    a = ProfileFactory(user=admin)
     a.save()
     context.username = "admin"
     context.password = "adminPassword"
@@ -35,7 +35,7 @@ def step_impl(context):
     # Create user without admin rights for testing
     user = User.objects.create_user(username='username', email='username@email.com', password='userPassword',
                                     is_superuser=False, is_staff=False)
-    u = UserFactory(user=user)
+    u = ProfileFactory(user=user)
     u.save()
     context.username = "username"
     context.password = "userPassword"

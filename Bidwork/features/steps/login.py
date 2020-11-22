@@ -1,13 +1,13 @@
 from behave import given, when, then
 from django.contrib.auth.models import User
-from test.factories.user import UserFactory
+from test.factories.user import ProfileFactory
 
 @given('a registered user on Login page')
 def step_impl(context):
 	# Creates a dummy user for our tests (user is not authenticated at this point)
 	user = User.objects.create_user(username='username', email='username@email.com', password='userPassword',
 									is_superuser=False, is_staff=False)
-	u = UserFactory(user=user)
+	u = ProfileFactory(user=user)
 	u.save()
 	context.username = "username"
 	context.password = "userPassword"

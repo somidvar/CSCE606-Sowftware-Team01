@@ -1,118 +1,132 @@
-import time
+from MyTimeFunctions import *
 from behave import given, when, then
-from test.factories.user import UserFactory
+from test.factories.user import ProfileFactory
 from django.contrib.auth.models import User
+from django.core.management import call_command
 
-@given('a logged in buyer on the Buyer Page')
+@given('a logged in buyer on the Buyer Page with the below bids')
 def step_impl(context):
-    # Creates a dummy user for our tests (user is not authenticated at this point)
-    user = User.objects.create_user(username='username', email='username@email.com', password='userPassword', is_superuser=False, is_staff=False)
-    u = UserFactory(user=user)
+    # Creating a buyer user
+    user = User.objects.create_user(username='username', email='username@email.com', password='userPassword',
+                                    is_superuser=False, is_staff=False)
+    userBudget = 3000.000
+    u = ProfileFactory(user=user, budget=userBudget)
     u.save()
-
     context.buyerUsername = "username"
     context.buyerPassword = "userPassword"
-    context.buyerBudget = 100
-    #
-    # # Direct user to Login page
-    # br = context.browser
-    # br.get(context.base_url + '/')
-    # br.find_element_by_name("login").click()
-    # # print(br.page_source)
-    #
-    # br.find_element_by_name('username').send_keys(context.buyerUsername)
-    # br.find_element_by_name('password').send_keys(context.buyerPassword)
-    # br.find_element_by_class_name("btn-outline-info").click()
-    # print(br.page_source)
-    #
-    # br.find_element_by_name("buyer").click()
-    # print(br.page_source)
-    # br.find_element_by_name("logout").click()
 
-    admin = User.objects.create_user(username='admin', email='admin@email.com', password='adminPassword', is_superuser=True, is_staff=True)
-    a = UserFactory(user=admin)
+    # Creating a seller user
+    admin = User.objects.create_user(username='admin', email='admin@email.com', password='adminPassword',
+                                     is_superuser=True, is_staff=True)
+    a = ProfileFactory(user=admin)
     a.save()
-    # admin = UserFactory(user=admin)
-    # admin.set_password('adminPassword')
-    # admin.save()
     context.sellerUsername = "admin"
     context.sellerPassword = "adminPassword"
 
-    # Direct user to Login page
+    # Direct to Login Page
     br = context.browser
     br.get(context.base_url + '/')
     br.find_element_by_name("login").click()
-    # print(br.page_source)
 
+    # Log In with seller credentials
     br.find_element_by_name('username').send_keys(context.sellerUsername)
     br.find_element_by_name('password').send_keys(context.sellerPassword)
     br.find_element_by_class_name("btn-outline-info").click()
-    # print(br.page_source)
-    #
-    br.find_element_by_name("admin").click()
-    br.find_element_by_xpath("//div[@id='content-main']/div[4]/table/tbody/tr/td[1]/a").click()
-    br.find_element_by_xpath("//nav[@id='nav-sidebar']/div[4]/table/tbody/tr/th/a").click()
-    br.find_element_by_partial_link_text(context.buyerUsername).click()
-    budget = br.find_element_by_id("id_budget")
-    budget.send_keys(int(context.buyerBudget/10))
-    # bud = budget.get_attribute("value")
-    br.find_element_by_name("_save").click()
-    br.find_element_by_partial_link_text(context.buyerUsername).click()
-    br.find_element_by_link_text("LOG OUT").click()
-    # br.find_element_by_partial_link_text(context.buyerUsername).click()
-    # bud = br.find_element_by_id("id_budget").get_attribute("value")
-    # print(bud)
 
+    # Direct to Seller Page
+    br.find_element_by_name("seller").click()
 
+    # Save the input bid table for later use
+    context.bidInputTable = context.table
+    context.bidHeader = ["Week Number", "Bid Start Date", "Bid End Date", "Min Price", "Max Price",
+                         "Total Availability"]
+    # 2=WeekNumber, 4=Bid Start Date, 5=Bid End Date, 6=Min Price, 7=Max Price, 9=Total Hours
+    context.tdSellerIndexOfBid = [2, 4, 5, 6, 7, 9]
+    for row in context.bidInputTable:
+        # Select Add Bid button
+        br.find_element_by_name("addBid").click()
+        for idx in range(len(context.bidHeader)):
+            # Click the table column (td class="editable")
+            # then input/{select/option} tag appears
+            # select it, clear previous value and enter new value
+            # Click update button twice to update record
+            bidColumn = br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[" + str(context.tdSellerIndexOfBid[idx]) + "]")
+            bidColumn.click()
+            if idx == 0:
+                br.find_element_by_xpath(
+                    "//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[" + str(context.tdSellerIndexOfBid[idx]) + "]/select/option[" + row[
+                        context.bidHeader[
+                            idx]] + "]").click()
+            else:
+                br.find_element_by_xpath(
+                    "//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[" + str(context.tdSellerIndexOfBid[idx]) + "]/input").clear()
+                bidColumn.click()
+                br.find_element_by_xpath(
+                    "//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[" + str(context.tdSellerIndexOfBid[idx]) + "]/input").send_keys(
+                    row[context.bidHeader[idx]])
+            br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[12]/input").click()
+            br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[12]/input").click()
 
-    # br.find_element_by_name("seller").click()
-    # br.find_element_by_name("addBid").click()
-    # element = br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[2]/td[6]")
-    # updateButton = br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[2]/td[12]/input")
-    # actions = ActionChains(br)
-    # actions.double_click(element)
-    # actions.send_keys_to_element('15')
-    # actions.click(updateButton)
-    # import time
-    # time.sleep(5)
-    # br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[2]/td[6]").send_keys(15)
-    # # import time
-    # # time.sleep(1)
-    # br.implicitly_wait(1)
-    # br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[2]/td[12]/input").click()
-    # br.find_element_by_name("logout").click()
+    br.find_element_by_name("logout").click()
 
-    # Creates a dummy user for our tests (user is not authenticated at this point)
-    # u = UserFactory(username='username', email='username@email.com')
-    # u.set_password('userPassword')
-    # u.save()
-
-    # context.buyerUsername = "username"
-    # context.buyerPassword = "userPassword"
-
-    # Direct user to Login page
-    # br = context.browser
+    # Direct to Login Page
+    br = context.browser
     br.get(context.base_url + '/')
     br.find_element_by_name("login").click()
-    # print(br.page_source)
 
+    # Log In with buyer credentials
     br.find_element_by_name('username').send_keys(context.buyerUsername)
     br.find_element_by_name('password').send_keys(context.buyerPassword)
     br.find_element_by_class_name("btn-outline-info").click()
-    # print(br.page_source)
-    #
+
+    # Direct to Buyer Page
     br.find_element_by_name("buyer").click()
-    # print(br.page_source)
 
 @when('I enter the number of Bid Hours and select "Bid" button')
 def step_impl(context):
     br = context.browser
-    assert float(br.find_element_by_xpath("//html/body/div[1]/div/div/div/h5/i[2]").text) == context.buyerBudget
+    context.bidHours = "10"
+    context.bidWeekNumber = br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[2]").text
+    # Click the Bid Hours column (td class="editable")
+    bidColumn = br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[9]")
+    bidColumn.click()
+    # Then input tag appears; Select it, clear previous value Enter new Bid Hours
+    br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[9]/input").clear()
+    bidColumn.click()
+    br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[9]/input").send_keys(context.bidHours)
+    # Click Bid button to update record
+    br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[10]/input").click()
+
 
 @then('I should see the bid under "My Bids" on the Buyer page')
 def step_impl(context):
-	pass
+    br = context.browser
+    # Check for Week Number of the placed bid under "My Bids" on the Buyer page
+    assert context.bidWeekNumber == br.find_element_by_xpath("//form[@id='form2']/table/tbody/tr[@id='tr_data'][1]/td[2]").text
+    # Check for Bid Hours of the placed bid under "My Bids" on the Buyer page
+    assert context.bidHours == br.find_element_by_xpath("//form[@id='form2']/table/tbody/tr[@id='tr_data'][1]/td[4]").text
+    br.find_element_by_name("logout").click()
 
 @then('as a seller I should see the bid under "Placed Bids" on the Seller page')
 def step_impl(context):
-	pass
+    # Direct to Login Page
+    br = context.browser
+    br.get(context.base_url + '/')
+    br.find_element_by_name("login").click()
+
+    # Log In with Seller credentials
+    br.find_element_by_name('username').send_keys(context.sellerUsername)
+    br.find_element_by_name('password').send_keys(context.sellerPassword)
+    br.find_element_by_class_name("btn-outline-info").click()
+
+    # Direct to Seller Page
+    br.find_element_by_name("seller").click()
+    # Check for Week Number of the placed bid under "Placed Bids" on the Seller page
+    assert context.bidWeekNumber == br.find_element_by_xpath("//form[@id='form2']/table/tbody/tr[@id='tr_data'][1]/td[2]").text
+    # Check for Buyer username of the placed bid under "Placed Bids" on the Seller page
+    assert context.buyerUsername == br.find_element_by_xpath("//form[@id='form2']/table/tbody/tr[@id='tr_data'][1]/td[3]").text
+    # Check for Bid Hours of the placed bid under "Placed Bids" on the Seller page
+    assert context.bidHours == br.find_element_by_xpath("//form[@id='form2']/table/tbody/tr[@id='tr_data'][1]/td[5]").text
+
+    call_command('flush', verbosity=0, interactive=False)
+

@@ -25,9 +25,9 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'Biddings',
-                'managed': False,
+                # 'managed': False,
                 # Testing
-                # 'managed': True,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -45,9 +45,9 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'Items',
-                'managed': False,
+                # 'managed': False,
                 # Testing
-                # 'managed': True,
+                'managed': True,
             },
         ),
     ]
