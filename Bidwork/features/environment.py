@@ -1,11 +1,9 @@
 from selenium import webdriver
+from sellers.models import Items, Biddings
+from buyers.models import Items_B, Biddings_B
 from django.core.management import call_command
-import os
 
 def before_all(context):
-	# PhantomJS is used there (headless browser - meaning we can execute tests in a command-line environment, which is what we want for use with SemaphoreCI
-	# For debugging purposes, you can use the Firefox driver instead.
-	# context.browser = webdriver.PhantomJS()
 	context.browser = webdriver.Firefox()
 	context.browser.set_window_size(1920, 1080)
 	context.browser.implicitly_wait(1)
@@ -17,6 +15,9 @@ def after_all(context):
 	# Explicitly quits the browser, otherwise it won't once tests are done
 	context.browser.quit()
 
+# Code to be executed each time a scenario is tested
 def before_scenario(context, scenario):
-	# Code to be executed each time a feature is going to be tested
-	call_command('flush', verbosity=0, interactive=False)
+	Items.objects.all().delete()
+	Biddings.objects.all().delete()
+	Items_B.objects.all().delete()
+	Biddings_B.objects.all().delete()

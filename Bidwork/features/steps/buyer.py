@@ -2,7 +2,6 @@ from MyTimeFunctions import *
 from behave import given, when, then
 from test.factories.user import ProfileFactory
 from django.contrib.auth.models import User
-from django.core.management import call_command
 
 @given('a logged in buyer on the Buyer Page with the below bids')
 def step_impl(context):
@@ -127,6 +126,3 @@ def step_impl(context):
     assert context.buyerUsername == br.find_element_by_xpath("//form[@id='form2']/table/tbody/tr[@id='tr_data'][1]/td[3]").text
     # Check for Bid Hours of the placed bid under "Placed Bids" on the Seller page
     assert context.bidHours == br.find_element_by_xpath("//form[@id='form2']/table/tbody/tr[@id='tr_data'][1]/td[5]").text
-
-    call_command('flush', verbosity=0, interactive=False)
-
