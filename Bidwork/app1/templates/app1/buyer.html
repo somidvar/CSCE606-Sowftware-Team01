@@ -1,4 +1,4 @@
-{%extends "app1/baseSellerBuyer.html"%}
+﻿{%extends "app1/baseSellerBuyer.html"%}
 
 {% block bodydata %}
 	{% if user.is_authenticated and not user.is_staff%}	
@@ -9,19 +9,23 @@
 						<h5> Welcome <i>{{currentUser.username}} </i>, your remaining budget is <i> {{budget}} </i><h5>
 						<h1><strong>Seller Schedule</strong><h1>
 					</div>
-					<div class="table">
+					<div class="table tableFixHead">
 						<form id="form1">
-							<table class="table">
+							<table class="table table1" id="table1">
+								<thead>
 								<tr>
-									<th>Week Number</th>
-									<th>Week Start Day</th>
-									<th>Bidding Start Date</th>
-									<th>Bidding End Date</th>
-									<th>Current Price</th>
-									<th>Remaining availability</th>
-									<th>Last Modified</th>
-									<th>Bid Hours</th>
+									<th col-id="1" hidden>ID</th>
+									<th col-id="2">Week Number</th>
+									<th col-id="3">Week Start Day</th>
+									<th col-id="4">Bidding Start Date</th>
+									<th col-id="5">Bidding End Date</th>
+									<th col-id="6">Current Price</th>
+									<th col-id="7">Remaining availability</th>
+									<th col-id="8">Last Modified</th>
+									<th col-id="9">Bid Hours</th>
 								</tr>
+								</thead>
+								<tbody>
 								{% for sell in sellsObjects %}
 									<tr id="tr_data">
 										<td data-id="{{ sell.0 }}" data-type="sell.id" hidden>{{ sell.0 }}</td>
@@ -41,6 +45,7 @@
 										{% endif %}
 									</tr>
 								{% endfor %}
+								</tbody>
 							</table>
 						</form>
 					</div>
@@ -51,16 +56,20 @@
 					<div class="form-group bg_blue">
 						<h1><strong>My Bids</strong><h1>
 					</div>
-					<div class="table">
+					<div class="table tableFixHead">
 						<form id="form2">
-							<table class="table">
+							<table class="table table2" id="table2">
+								<thead>
 								<tr>
-									<th>Week Number</th>
-									<th>Unit Price</th>
-									<th>Bid Hour</th>
-									<th>Total Price</th>
-									<th>Post Date</th>
+									<th col-id="1" hidden>ID</th>
+									<th col-id="2" >Week Number</th>
+									<th col-id="3" >Unit Price</th>
+									<th col-id="4" >Bid Hour</th>
+									<th col-id="5" >Total Price</th>
+									<th col-id="6" >Post Date</th>
 								</tr>
+								</thead>
+								<tbody>
 								{% for bid in bidsObjects %}
 									<tr id="tr_data">
 										<td style="{{bid.6}}" data-id="{{ bid.0 }}" data-type="id" hidden>{{ bid.0 }}</td>
@@ -71,6 +80,7 @@
 										<td style="{{bid.6}}" data-id="{{ bid.0 }}" data-type="Bidding_Date">{{ bid.5 }}</td>
 									</tr>
 								{% endfor %}
+								</tbody>
 							</table>
 						</form>
 					</div>
@@ -93,8 +103,71 @@
 
 {% block custom_js %}
 <script>
-	$(document).ready(function(){
-		$(document).on("click",".editable",function(){
+	$(document).ready(function () {
+/*		$('table').scrollTableBody();
+		if (parseInt($('.alert').length) > 0) {
+					$('#form1 .jqstb-scroll').height(464-$('.alert').length*2*parseInt($('.alert').height()))
+					$('#form2 .jqstb-scroll').height('573')
+		} else {
+					$('#form1 .jqstb-scroll').height('480')
+					$('#form2 .jqstb-scroll').height('573')
+		} */
+	var newTableObject = document.getElementById("table1");
+		sorttable.makeSortable(newTableObject);
+		var newTableObject = document.getElementById("table2");
+		sorttable.makeSortable(newTableObject); 
+	/*	$($("table.jqstb-header-table")[0]).attr("id", "table1");
+		$($("table.jqstb-header-table")[1]).attr("id", "table2"); */
+	/*	$(document).on("click", "#table1.table1 thead th", function () {
+			if ($(this).is(":visible")) {
+				$($($('#table1.table1 thead tr')[1]).children()[parseInt($(this).attr("col-id")) - 1]).click();
+								if ($(this).attr("order") == undefined) {
+				$("#sorttable_sortrevind").remove();
+				$("#sorttable_sortfwdind").remove();
+				$(this).attr("order", "1");
+				$(this).append("<span id='sorttable_sortfwdind'>&nbsp;▾</span>");
+			} else if ($(this).attr("order") == "1") {
+				$(this).attr("order", "-1");
+				$("#sorttable_sortrevind").remove();
+				$("#sorttable_sortfwdind").remove();
+				$(this).append("<span id='sorttable_sortrevind'>&nbsp;▴</span>");
+			} else if ($(this).attr("order") == "-1") {
+				$("#sorttable_sortrevind").remove();
+				$("#sorttable_sortfwdind").remove();
+				$(this).attr("order", "1");
+				$(this).append("<span id='sorttable_sortfwdind'>&nbsp;▾</span>");
+			}
+			}
+
+			//sortTable($(this).attr("col-id"), "table1",$(this).attr("order"));
+		});
+
+		$(document).on("click", "#table2.table1 thead th", function () {
+			if ($(this).is(":visible")) {
+				$($($('#table2.table2 thead tr')[0]).children()[parseInt($(this).attr("col-id")) - 1]).click();
+								if ($(this).attr("order") == undefined) {
+				$("#sorttable_sortrevind").remove();
+				$("#sorttable_sortfwdind").remove();
+				$(this).attr("order", "1");
+				$(this).append("<span id='sorttable_sortfwdind'>&nbsp;▾</span>");
+			} else if ($(this).attr("order") == "1") {
+				$(this).attr("order", "-1");
+				$("#sorttable_sortrevind").remove();
+				$("#sorttable_sortfwdind").remove();
+				$(this).append("<span id='sorttable_sortrevind'>&nbsp;▴</span>");
+			} else if ($(this).attr("order") == "-1") {
+				$("#sorttable_sortrevind").remove();
+				$("#sorttable_sortfwdind").remove();
+				$(this).attr("order", "1");
+				$(this).append("<span id='sorttable_sortfwdind'>&nbsp;▾</span>");
+			}
+			}
+
+			//sortTable($(this).attr("col-id"), "table1",$(this).attr("order"));
+		});
+		*/
+			$("#table1.table1 thead tr").append("<th></th>");
+		$(document).on("dblclick",".editable",function(){
 			var value=$(this).text();
 			var data_type=$(this).data("type");
 			var input_type="text";

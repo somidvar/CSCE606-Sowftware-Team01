@@ -1,4 +1,4 @@
-{%extends "app1/baseSellerBuyer.html"%}
+﻿{%extends "app1/baseSellerBuyer.html"%}
 
 {% block bodydata %}
 	{% if user.is_authenticated and user.is_staff%}
@@ -9,23 +9,28 @@
 						<h5> Welcome <i>{{currentUser.username}} </i><h5>
 						<h1><strong>My schedule</strong><h1>
 					</div>
-					<div class="table">
+					<div class="table tableFixHead">
 						<form id="form1">
-							<table class="table">
+							<table id="table1" class="table table1">
+								<thead>
 								<tr>
-									<th>Week Number</th>
-									<th>Week Start Day</th>
-									<th>Bidding Start Date</th>
-									<th>Bidding End Date</th>
-									<th>Min Price</th>
-									<th>Max Price</th>
-									<th>Current Price</th>
-									<th>Total Availablity</th>
-									<th>Remaining availability</th>
-									<th>Last Modified</th>
+									<th col-id="1" hidden>Id</th>
+									<th col-id="2">Week Number</th>
+									<th col-id="3">Week Start Day</th>
+									<th col-id="4">Bidding Start Date</th>
+									<th col-id="5">Bidding End Date</th>
+									<th col-id="6">Min Price</th>
+									<th col-id="7">Max Price</th>
+									<th col-id="8">Current Price</th>
+									<th col-id="9">Total Availablity</th>
+									<th col-id="10">Remaining availability</th>
+									<th col-id="11">Last Modified</th>
+									
 								</tr>
+								</thead>
+								<tbody>
 								{% for sell in sellsObjects %}
-								<tr id="tr_data">
+								<tr id="tr_data" class="item">
 									<td data-id="{{ sell.0 }}" data-type="sell.0" hidden>{{ sell.0 }}</td>
 									<td style="{{sell.12}}" class="{{sell.13}}" data-id="{{ sell.0 }}" data-type="Week_Number">{{ sell.1 }}</td>
 									<td style="{{sell.14}}" data-id="{{ sell.0 }}" data-type="Week_Start_Date">{{ sell.2 }}</td>
@@ -45,6 +50,7 @@
 									</td>
 								</tr>
 								{% endfor %}
+									</tbody>
 							</table>
 						</form>
 					</div>
@@ -56,17 +62,21 @@
 					<div class="form-group bg_blue">
 						<h1><strong>Placed Bids</strong><h1>
 						</div>
-						<div class="table">
+						<div class="table tableFixHead">
 							<form id="form2">
-								<table class="table">
+								<table id="table2" class="table table2">
+									<thead>
 									<tr>
-										<th>Week Number</th>
-										<th>Buyer Name</th>
-										<th>Unit Price</th>
-										<th>Bid Hour</th>									
-										<th>Total Price</th>
-										<th>Post Date</th>
+										<th col-id="1" hidden>ID</th>
+										<th col-id="2">Week Number</th>
+										<th col-id="3">Buyer Name</th>
+										<th col-id="4">Unit Price</th>
+										<th col-id="5">Bid Hour</th>									
+										<th col-id="6">Total Price</th>
+										<th col-id="7">Post Date</th>
 									</tr>
+								    </thead>
+									<tbody>
 									{% for bid in bidsObjects %}
 										<tr id="tr_data">
 											<td  style="{{bid.7}}" data-id="{{ bid.0 }}" data-type="id" hidden>{{ bid.0 }}</td>
@@ -77,7 +87,8 @@
 											<td  style="{{bid.7}}" data-id="{{ bid.0 }}" data-type="Total">{{ bid.5 }}</td>
 											<td  style="{{bid.7}}" data-id="{{ bid.0 }}" data-type="Bidding_Date">{{ bid.6 }}</td>
 										</tr>
-									{% endfor %}									
+									{% endfor %}
+									</tbody>
 								</table>
 							</form>
 						</div>
@@ -100,8 +111,37 @@
 {% endblock bodydata %}
 {% block custom_js %}
 <script>
-	$(document).ready(function(){
-		$(document).on("click",".editable",function(){
+	$(document).ready(function () {
+		//setTimeout(0.2);
+
+		//$('table').scrollTableBody();
+		//$('#table2').scrollTableBody();
+		/*if (parseInt($('.alert').length) > 0) {
+					$('#form1 .jqstb-scroll').height(424-$('.alert').length*2*parseInt($('.alert').height()))
+					$('#form2 .jqstb-scroll').height('573')
+		} else {
+					$('#form1 .jqstb-scroll').height('405')
+					$('#form2 .jqstb-scroll').height('573')
+		}*/
+
+		var newTableObject = document.getElementById("table1");
+		sorttable.makeSortable(newTableObject);
+		var newTableObject = document.getElementById("table2");
+		sorttable.makeSortable(newTableObject); 
+		/*$($("table.jqstb-header-table")[0]).attr("id", "table1");
+		$($("table.jqstb-header-table")[0]).css({ "maxWidth": "89%" });
+		$($("table.jqstb-header-table")[1]).attr("id", "table2");*/
+		$("#table1.table1 thead tr").append("<th></th>");
+
+	/*	$($('#table1.table1 thead tr')[1]).children().each(function( index ) {
+					console.log( index + ": " + $( this ).width() );
+			$($($('#table1.table1 thead tr')[0]).children()[index]).width($(this).width());
+			$($($('#table1.table1 thead tr')[0]).children()[index]).width($(this).height());
+			$($($('#table1.table1 thead tr')[0]).children()[index]).width($(this).offset());
+		}); */
+
+
+		$(document).on("dblclick",".editable",function(){
 			var value=$(this).text();
 			var data_type=$(this).data("type");
 			var input_type="text";
@@ -119,6 +159,12 @@
 
 			$(this).html(input);
 			$(this).removeClass("editable")
+			/*$($('#table1.table1 thead tr')[1]).children().each(function( index ) {
+					console.log( index + ": " + $( this ).width() );
+						$($($('#table1.table1 thead tr')[0]).children()[index]).width($(this).width());
+						$($($('#table1.table1 thead tr')[0]).children()[index]).width($(this).height());
+						$($($('#table1.table1 thead tr')[0]).children()[index]).width($(this).offset());
+			}); */
 		});
 
 		$(document).on("click",".update-button",function(e){
@@ -133,7 +179,56 @@
 			td.html(value);
 			td.addClass("editable");
 		});
+	/*	$(document).on("click", "#table1.table1 thead th", function () {
+			if ($(this).is(":visible")) {
 
+				$($($('#table1.table1 thead tr')[1]).children()[parseInt($(this).attr("col-id")) - 1]).click();
+			if($(this).attr("order") == undefined) {
+				$("#sorttable_sortrevind").remove();
+				$("#sorttable_sortfwdind").remove();
+				$(this).attr("order", "1");
+				$(this).append("<span id='sorttable_sortfwdind'>&nbsp;▾</span>");
+			} else if ($(this).attr("order") == "1") {
+				$(this).attr("order", "-1");
+				$("#sorttable_sortrevind").remove();
+				$("#sorttable_sortfwdind").remove();
+				$(this).append("<span id='sorttable_sortrevind'>&nbsp;▴</span>");
+			} else if ($(this).attr("order") == "-1") {
+				$("#sorttable_sortrevind").remove();
+				$("#sorttable_sortfwdind").remove();
+				$(this).attr("order", "1");
+				$(this).append("<span id='sorttable_sortfwdind'>&nbsp;▾</span>");
+			}
+			}
+
+			//sortTable($(this).attr("col-id"), "table1",$(this).attr("order"));
+		});
+
+		$(document).on("click", "#table2.table1 thead th", function () {
+			if ($(this).is(":visible")) {
+				
+				$($($('#table2.table2 thead tr')[0]).children()[parseInt($(this).attr("col-id")) - 1]).click();
+				if ($(this).attr("order") == undefined) {
+				$("#sorttable_sortrevind").remove();
+				$("#sorttable_sortfwdind").remove();
+				$(this).attr("order", "1");
+				$(this).append("<span id='sorttable_sortfwdind'>&nbsp;▾</span>");
+			} else if ($(this).attr("order") == "1") {
+				$(this).attr("order", "-1");
+				$("#sorttable_sortrevind").remove();
+				$("#sorttable_sortfwdind").remove();
+				$(this).append("<span id='sorttable_sortrevind'>&nbsp;▴</span>");
+			} else if ($(this).attr("order") == "-1") {
+				$("#sorttable_sortrevind").remove();
+				$("#sorttable_sortfwdind").remove();
+				$(this).attr("order", "1");
+				$(this).append("<span id='sorttable_sortfwdind'>&nbsp;▾</span>");
+			}
+			}
+
+			//sortTable($(this).attr("col-id"), "table1",$(this).attr("order"));
+		});
+		*/
 		$(document).on("change","#Week_Number",function(e){
 			let id = $(this)[0];
 			var result = new Date("12/29/2019");
@@ -152,6 +247,24 @@
 				td.addClass("editable");
 			}
 		});
+		function sortTable(column, table_id, order) {
+
+			$.ajax({
+				url:window.location.href.replace("seller","sortSellerTable1"),
+				type:"POST",
+				data:do_serialize_sort(column, table_id, order),
+			})
+			.done(function(response){
+				console.log(response);
+					//alert("Update succeeded")
+					//location.reload();
+				})
+			.fail(function(){
+				console.log("Error Occured");
+					//alert("Update failed")
+				});
+		}
+
 		function sendToServer(id){
 			$.ajax({
 				url:window.location.href.replace("seller","saveSell"),
@@ -170,6 +283,13 @@
 		}
 
 	});
+	function do_serialize_sort(column, table_id,order){
+		let data = {};
+		data.column = column;
+		data.table_id = table_id;
+		data.order = order;
+		return data;
+	}
 	function do_serialize(id){
 		let data = {};
 		$('#form1').find('tr').each(function(){
