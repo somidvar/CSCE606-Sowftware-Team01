@@ -45,6 +45,21 @@ a.article-title:hover {
   text-decoration: none;
 }
 
+.tableFixHead thead th {
+    position: sticky;
+    top: -1;
+}
+
+.tableFixHead {
+    overflow: auto;
+    height: 424px;
+}
+
+th {
+    background: #fff;
+    z-index: 1;
+}
+
 .article-content {
   white-space: pre-line;
 }
