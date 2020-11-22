@@ -5,3 +5,6 @@ django-channels
 django-crispy-forms
 Pillow
 psycopg2
+selenium
+behave_django
+factory_boy
