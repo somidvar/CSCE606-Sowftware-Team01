@@ -36,6 +36,12 @@ from django.shortcuts import redirect
 def home(request):
 	return render(request,'app1/home.html')
 
+def developers(request):
+	return render(request,'app1/developers.html')
+
+def help(request):
+	return render(request,'app1/help.html')	
+
 def userSchedule(request):
 	if (request.user.is_staff):
 		return redirect(seller)

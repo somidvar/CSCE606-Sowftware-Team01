@@ -5,6 +5,8 @@ urlpatterns = [
     path('', views.userSchedule,name='app1-userSchedule'),
     path('home', views.home,name='app1-home'),
     path('aboutus', views.aboutus,name='app1-aboutus'),
+    path('developers', views.developers,name='app1-developers'),
+    path('help', views.help,name='app1-help'),
 
     path('seller', views.seller,name='app1-seller'),
     path('saveSell', apiViews.saveSell, name='saveSell'),

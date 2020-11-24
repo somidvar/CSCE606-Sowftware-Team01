@@ -30,6 +30,7 @@
 					<div class="navbar-nav mr-auto">
 						<a class="nav-item nav-link" name="home" href="{%url 'app1-home'%}">Home</a>
 						<a class="nav-item nav-link" name="aboutUs" href="{%url 'app1-aboutus'%}">About</a>
+						<a class="nav-item nav-link" name="developers" href="{%url 'app1-developers'%}">Developers</a>
 						{% if user.is_authenticated %}
 							{%if user.is_staff %}
 								{%if user.is_superuser%}
@@ -45,6 +46,7 @@
 					</div>
 					<div class="navbar-nav">
 						{% if user.is_authenticated %}
+							<a class="nav-item nav-link" name="help" href="{% url 'app1-help' %}">Help</a>
 							<a class="nav-item nav-link" name="profile" href="{% url 'profile' %}">Profile</a>
 							<a class="nav-item nav-link" name="logout" href="{% url 'logout' %}">Logout</a>
 						{% else %}

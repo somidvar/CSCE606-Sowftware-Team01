@@ -1,0 +1,28 @@
+{%extends "app1/baseSellerBuyer.html"%}
+{% block bodydata %}
+<div class="left">
+
+    <p>
+        <h1><strong>Faculties Help</strong></h1>
+        <h4>After logging in, you should see your username and budget on top of the page as well as the schedule of the data analyst (aka seller) followed by your bid history (lower table). For the upper table, each row shows the details of a week where the week number (1st column) and week start date (2nd column) denotes the week of the year and its starting date. The 3rd and 4th columns show the bidding start and its end date. Please note that you can only bid during the period of the beginning-end bid date. The next column shows the current price which is a linear function of maximum and minimum price (set by the seller) as well as the elapsed bidding time. The remaining hour for the regarding week is reported next. The system logs all of the activities and 'Last-Modified' suggests the last time when the seller modified the item. Finally, the bid hours is the only editable column where you need to enter the hours you need to hire the seller. Such a number should be 1) an integer, 2) smaller than the available, and 3) bigger than zero. After entering the hour, press the "bid" button to place your bid. Shortly, you will get a success/failure notification at the top of the page. The past weeks are shown in the gray background and the table can be sorted ascendingly or descendingly by clicking on the header. For more information, please contact your administrator. <br><br>
+
+        The lower table shows the history of the bids that you have placed. Each row contains the week number, bid price (per hour), bid hours, and the total bid price followed by the time that it has been placed.
+    </p>
+
+    <p>
+        <h1><strong>Data-analyst Help</strong></h1>
+        <h4>After logging in, you should see your username or admin at the top of the page followed by your schedule and the placed bids by faculties (aka buyers). Each row shows the details of a week where the week number (1st column) and week start date (2nd column) denotes the week of the year and its starting date. The 3rd and 4th columns show the bidding start and its end date. The minimum (5th column) and maximum (6th column) and current price (7th column) are next in the list. The current price is a linear function of maximum and minimum price as well as the elapsed bidding time. The total availability is dictated by you and is the total number of hours that you are working in that specific week while the remaining hour shows the left hours (not bided yet). The system logs all of the activities and 'Last-Modified' suggests the last time that you modified the item.<br><br>
+
+        To make a new item (week), press the "Add" button and a new record will show up in the table. Subsequently, you need to update the numbers/dates and press the "update" button designed at that row. You only can delete the weeks which are not bided yet (the weeks with bids do not have the delete button). Also, for the weeks with the present bidding, you shall only update the record by increasing the total availability hour. The editable fields are denoted in blue underlined style. After updating, a notification will be shown at the top of the page with the proper message. The following validations are in-place for updating/adding an item: 1) the week number shall be unique and not repeated (you can increase the availability number if needed), 2) the maximum price should be bigger or equal to the minimum price, 3) the total availability should be higher than the amount which is already bided, 4) the total availability should be bigger than 0 and less than 168 hours (full load), 6) the bid end date should be later than the bid start date, 7) the bidding end date should be sooner than the week start date (i.e. if you are updating the week starting in 10th of October, the end date should happen by 9th). <br><br>
+
+        The lower table shows the placed bids by buyers. You can see the week number, buyer user name, bid price (per hour), bid hour, and total price of the bidding followed by the time that it is place. The table can be sorted ascendingly or descendingly by pressing each of the headers. The passed bids are shown with gray background. For more information, please contact your administrator.
+
+    </p>    
+</div>
+
+{% endblock bodydata %}
+{% block custom_js %}
+<script>
+
+</script>
+{% endblock custom_js %}
