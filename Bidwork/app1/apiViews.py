@@ -18,38 +18,41 @@ def saveSell(request):
 	currentSell=Items.objects.get(id=id)
 	sellers=Items.objects.all()
 
-	Week_Number=Decimal(request.POST.get('Week_Number',''))
-	Min_Price=Decimal(request.POST.get('Min_Price',''))
-	Max_Price=Decimal(request.POST.get('Max_Price',''))
-	Total_Availibility=Decimal(request.POST.get('Total_Availibility',''))
+	Week_Number_Str=request.POST.get('Week_Number','')
+	Min_Price_Str=request.POST.get('Min_Price','')
+	Max_Price_Str=request.POST.get('Max_Price','')
+	Total_Availibility_Str=request.POST.get('Total_Availibility','')
 	End_Date_Str=request.POST.get('End_Date','')
 	Start_Date_Str=request.POST.get('Start_Date','')
 
-	#Week_Number validation
-	for seller in sellers:
-		if(Week_Number==seller.Week_Number and seller.id!=currentSell.id):
-			messages.error(request, "Week number is repeated")
-			return JsonResponse({"error":"validation"})
-	#min and max price validation
-	if(Min_Price<0 or Max_Price<0):
-		messages.error(request, "Prices cannot be negative")
+	#Week Number validation
+	try:
+		Week_Number=int(Week_Number_Str)
+	except Exception as e:
+		messages.error(request, "The week number should be an integer")
 		return JsonResponse({"error":"validation"})
-	if(Max_Price<Min_Price):
-		messages.error(request, "Min price should be smaller than max")
-		return JsonResponse({"error":"validation"})
-	#Checking to make sure that the update does not go under what it is already bidded
-	bids=Biddings.objects.filter(Item_Id=currentSell.id)
-	totalBidHour=0
-	for bid in bids:
-		totalBidHour=totalBidHour+bid.Hours
-	if(Total_Availibility<totalBidHour):
-		messages.error(request, ("The total availibility should be greater than currently bidded of "+str(totalBidHour)+" hours"))
-		return JsonResponse({"error":"validation"})			
-	#total availibility validation
-	if(Total_Availibility<0 or Total_Availibility>24*7):
-		messages.error(request, "The total availibility should be between 0 and 168 hours")
-		return JsonResponse({"error":"validation"})	
 
+	#Min Price validation
+	try:
+		Min_Price=float(Min_Price_Str)
+	except Exception as e:
+		messages.error(request, "The min price should be a float")
+		return JsonResponse({"error":"validation"})
+
+	#Max Price validation
+	try:
+		Max_Price=Decimal(Max_Price_Str)
+	except Exception as e:
+		messages.error(request, "The max price should be a float")
+		return JsonResponse({"error":"validation"})
+
+	#Total availibility validation
+	try:
+		Total_Availibility=int(Total_Availibility_Str)
+	except Exception as e:
+		messages.error(request, "The total availibility should be an integer")
+		return JsonResponse({"error":"validation"})
+	
 	#start date validation
 	try:
 		Start_Date=datetime.datetime.strptime(Start_Date_Str, "%Y-%m-%d %H:%M")
@@ -64,13 +67,45 @@ def saveSell(request):
 		messages.error(request, "The end date should be in Year-Month-Day Hour:Minute")
 		return JsonResponse({"error":"validation"})
 
-	#week start date validation
-	Week_Start_Date=setWeekStartDay(Week_Number)
+	if (Week_Number<=0):
+		messages.error(request, "The week number should be positive")
+		return JsonResponse({"error":"validation"})
 
+	#Week_Number validation
+	for seller in sellers:
+		if(Week_Number==seller.Week_Number and seller.id!=currentSell.id):
+			messages.error(request, "Week number should be unique")
+			return JsonResponse({"error":"validation"})
+
+	#min and max price validation
+	if(Min_Price<0 or Max_Price<0):
+		messages.error(request, "Prices cannot be negative")
+		return JsonResponse({"error":"validation"})
+	if(Max_Price<Min_Price):
+		messages.error(request, "Min price should be smaller than max")
+		return JsonResponse({"error":"validation"})
+
+	#Checking to make sure that the update does not go under what it is already bidded
+	bids=Biddings.objects.filter(Item_Id=currentSell.id)
+	totalBidHour=0
+	for bid in bids:
+		totalBidHour=totalBidHour+bid.Hours
+	if(Total_Availibility<totalBidHour):
+		messages.error(request, ("The total availibility should be greater than currently bidded of "+str(totalBidHour)+" hours"))
+		return JsonResponse({"error":"validation"})		
+
+	#total availibility validation
+	if(Total_Availibility<0):
+		messages.error(request, "The total availibility should be between 0 and 168 hours")
+		return JsonResponse({"error":"validation"})	
+
+
+	Week_Start_Date=setWeekStartDay(Week_Number)
 	#start/end date comparison validation
 	if(Start_Date>=End_Date):
 		messages.error(request, "The end date should be later than start date")
 		return JsonResponse({"error":"validation"})	
+	
 	#bidding execution and week_Number comparison validation
 	if(Week_Start_Date<End_Date):
 		messages.error(request, "The bidding should be executed before the start date of the work")

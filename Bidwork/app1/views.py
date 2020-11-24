@@ -60,7 +60,6 @@ def seller(request):
 	sellsDetails=[]
 	if(sells.count()>0):
 		for sell in sells:
-			sellEditable=1
 			Bid_ElapsedTime=MyCurrentTime()- sell.Start_Date
 			Bid_Horizon=sell.End_Date- sell.Start_Date
 			Bid_Horizon=int(Bid_Horizon.total_seconds()/3600)
@@ -85,7 +84,7 @@ def seller(request):
 
 			if(bids.count()>0):
 				sellEditableFlag=0
-				editableSellStyle="color:#00688B;text-decoration: underline;"
+				editableSellStyle="color:#000000;"
 				editableSellClass=""
 			else:
 				sellEditableFlag=1
@@ -147,17 +146,17 @@ def newSell(request):
 			if(sell.Week_Number>=Max_Week):
 				Max_Week=sell.Week_Number+1
 
-	if (Max_Week+1>53):
-		availableWeek=[]
-		for counter in range(1,54):
-			availableWeek.append(counter)
-		for sell in sells:
-			if(availableWeek.count(sell.Week_Number)>0):
-				availableWeek.remove(sell.Week_Number)
-		if(len(availableWeek)>0):
-			Max_Week=availableWeek.pop(0)
-		else:
-			Max_Week=1
+	# if (Max_Week+1>53):
+	# 	availableWeek=[]
+	# 	for counter in range(1,54):
+	# 		availableWeek.append(counter)
+	# 	for sell in sells:
+	# 		if(availableWeek.count(sell.Week_Number)>0):
+	# 			availableWeek.remove(sell.Week_Number)
+	# 	if(len(availableWeek)>0):
+	# 		Max_Week=availableWeek.pop(0)
+	# 	else:
+	# 		Max_Week=1
 
 	newSell.Week_Number=Max_Week
 	newSell.Min_Price=10
