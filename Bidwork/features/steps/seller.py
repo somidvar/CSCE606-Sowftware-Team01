@@ -26,7 +26,7 @@ def step_impl(context):
 def step_impl(context):
     # Direct to Login Page
     br = context.browser
-    br.get(context.base_url + '/')
+    br.get(context.base_url + '/home')
     br.find_element_by_name("login").click()
 
     # Log In with seller credentials
@@ -49,7 +49,7 @@ def step_impl(context):
     br.find_element_by_link_text("LOG OUT").click()
 
     # Direct user to the Login Page
-    br.get(context.base_url + '/')
+    br.get(context.base_url + '/home')
     br.find_element_by_name("login").click()
 
     # Log in with Buyer Credentials
@@ -88,7 +88,7 @@ def step_impl(context):
 
     # Direct to Login Page
     br = context.browser
-    br.get(context.base_url + '/')
+    br.get(context.base_url + '/home')
     br.find_element_by_name("login").click()
 
     # Log In with seller credentials
@@ -111,20 +111,15 @@ def step_impl(context):
         br.find_element_by_name("addBid").click()
         for idx in range(len(context.bidHeader)):
             # Click the table column (td class="editable")
-            # then input/{select/option} tag appears
+            # then input tag appears
             # select it, clear previous value and enter new value
             # Click update button twice to update record
             bidColumn = br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[" + str(context.tdSellerIndexOfBid[idx]) + "]")
             bidColumn.click()
-            if idx == 0:
-                br.find_element_by_xpath(
-                    "//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[" + str(context.tdSellerIndexOfBid[idx]) + "]/select/option[" + row[context.bidHeader[
-                        idx]] + "]").click()
-            else:
-                br.find_element_by_xpath(
+            br.find_element_by_xpath(
                     "//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[" + str(context.tdSellerIndexOfBid[idx]) + "]/input").clear()
-                bidColumn.click()
-                br.find_element_by_xpath(
+            bidColumn.click()
+            br.find_element_by_xpath(
                     "//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[" + str(context.tdSellerIndexOfBid[idx]) + "]/input").send_keys(row[context.bidHeader[idx]])
             br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[12]/input").click()
             br.find_element_by_xpath("//form[@id='form1']/table/tbody/tr[@id='tr_data'][1]/td[12]/input").click()
@@ -146,7 +141,7 @@ def step_impl(context):
 
     # Direct to Login Page
     br = context.browser
-    br.get(context.base_url + '/')
+    br.get(context.base_url + '/home')
     br.find_element_by_name("login").click()
 
     # Log In with buyer credentials

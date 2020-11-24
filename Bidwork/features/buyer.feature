@@ -1,6 +1,5 @@
 Feature: Buyer
 
-  @slow
   Scenario: Test Buyer Page
     Given a logged in buyer on the Buyer Page with the below bids
       | Week Number | Bid Start Date   | Bid End Date     | Min Price | Max Price  | Total Availability |

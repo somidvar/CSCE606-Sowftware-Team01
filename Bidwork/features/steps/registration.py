@@ -22,7 +22,8 @@ def step_impl(context):
 def step_impl(context):
     br = context.browser
     # Check if the browser is on home page
-    assert br.current_url.endswith(context.base_url + "/")
+    print(br.current_url)
+    assert br.current_url.endswith(context.base_url + "/home")
     # Check for notification for account created
     try:
         br.find_element_by_name('accountCreated')
