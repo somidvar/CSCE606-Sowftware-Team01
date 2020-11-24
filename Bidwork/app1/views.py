@@ -30,10 +30,18 @@ from decimal import *
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from MyTimeFunctions import *
+from django.shortcuts import redirect
 
 
 def home(request):
 	return render(request,'app1/home.html')
+
+def userSchedule(request):
+	if (request.user.is_staff):
+		return redirect(seller)
+	else:
+		return redirect(buyer)
+
 
 def aboutus(request):
 	return render(request,'app1/aboutus.html')
