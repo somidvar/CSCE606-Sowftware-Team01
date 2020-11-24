@@ -14,6 +14,7 @@ def step_impl(context):
 
 	# Direct user to Login page
 	br = context.browser
+	br.get(context.base_url + '/home')
 	br.find_element_by_name("login").click()
 
 @when('I submit a login request')
@@ -32,8 +33,8 @@ def step_impl(context):
 def step_impl(context):
 	br = context.browser
 	# Checks URL matches Home Page URL
-	assert br.current_url.endswith("/") and not br.current_url.endswith("/login/")
-	# Redirect to home page
+	assert br.current_url.endswith("/buyer") and not br.current_url.endswith("/login/")
+	# Logout after test is complete
 	br.find_element_by_name("logout").click()
 
 @given('an unregistered user on Login page')
@@ -43,6 +44,7 @@ def step_impl(context):
 
 	# Direct user to Login page
 	br = context.browser
+	br.get(context.base_url + '/home')
 	br.find_element_by_name("login").click()
 
 @then('I should be redirected to the Login page and receive error message')

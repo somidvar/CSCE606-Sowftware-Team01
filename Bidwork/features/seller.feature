@@ -1,9 +1,9 @@
 Feature: Seller
-#  @slow
+
   Scenario: Test Seller Page
-#    Given an seller user with administrative rights
-#    When I enter the budget for a buyer
-#    Then the budget should be assigned to the buyer
+    Given an seller user with administrative rights
+    When I enter the budget for a buyer
+    Then the budget should be assigned to the buyer
 
     Given a logged in seller on the Seller Page
     When I Add the below bids
