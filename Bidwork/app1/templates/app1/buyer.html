@@ -166,6 +166,7 @@
 			//sortTable($(this).attr("col-id"), "table1",$(this).attr("order"));
 		});
 		*/
+		// Input values to the table using a single click. Testing follows this logic
 			$("#table1.table1 thead tr").append("<th></th>");
 		$(document).on("click",".editable",function(){
 			var value=$(this).text();
@@ -178,6 +179,7 @@
 			$(this).html(input);
 			$(this).removeClass("editable")
 		});
+		// Input values to the table using a single click. Testing follows this logic
 		$(document).on("click",".editable",function(){
 			var value=$(this).text();
 			var data_type=$(this).data("type");
