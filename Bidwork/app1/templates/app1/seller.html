@@ -6,7 +6,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="form-group bg_blue">
-						<h5> Welcome <i>{{currentUser.username}} </i><h5>
+						<h5> Welcome <i>{{currentUser.username}}</i><h5><br><br>
 						<h1><strong>My schedule</strong><h1>
 					</div>
 					<div class="table tableFixHead">
@@ -16,7 +16,7 @@
 								<tr>
 									<th col-id="1" hidden>Id</th>
 									<th col-id="2" style="color:#00688B;text-decoration: underline;">Week Number</th>
-									<th col-id="3" style="color:#00688B;text-decoration: underline;">Week Start Day</th>
+									<th col-id="3" style="color:#00688B;text-decoration: underline;">Week Start Date</th>
 									<th col-id="4" style="color:#00688B;text-decoration: underline;">Bidding Start Date</th>
 									<th col-id="5" style="color:#00688B;text-decoration: underline;">Bidding End Date</th>
 									<th col-id="6" style="color:#00688B;text-decoration: underline;">Min Price</th>
@@ -56,9 +56,10 @@
 						</form>
 					</div>
 				</div>
-			</div>
-			<div class="row">
 				<a href="/newSell" class="btn btn-success" name="addBid">Add</a>
+			</div>
+			<br><br>
+			<div class="row">
 				<div class="col-lg-12">
 					<div class="form-group bg_blue">
 						<h1><strong>Placed Bids</strong><h1>
@@ -69,12 +70,12 @@
 									<thead>
 									<tr>
 										<th col-id="1" hidden>ID</th>
-										<th col-id="2">Week Number</th>
-										<th col-id="3">Buyer Name</th>
-										<th col-id="4">Unit Price</th>
-										<th col-id="5">Bid Hour</th>									
-										<th col-id="6">Total Price</th>
-										<th col-id="7">Post Date</th>
+										<th col-id="2" style="color:#00688B;text-decoration: underline;" >Week Number</th>
+										<th col-id="3" style="color:#00688B;text-decoration: underline;" >Buyer Name</th>
+										<th col-id="4" style="color:#00688B;text-decoration: underline;" >Unit Price</th>
+										<th col-id="5" style="color:#00688B;text-decoration: underline;" >Bid Hour</th>									
+										<th col-id="6" style="color:#00688B;text-decoration: underline;" >Total Price</th>
+										<th col-id="7" style="color:#00688B;text-decoration: underline;" >Post Date</th>
 									</tr>
 								    </thead>
 									<tbody>
