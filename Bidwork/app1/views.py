@@ -42,6 +42,7 @@ def developers(request):
 def help(request):
 	return render(request,'app1/help.html')	
 
+@login_required
 def userSchedule(request):
 	if (request.user.is_staff):
 		return redirect(seller)
